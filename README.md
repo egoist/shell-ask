@@ -23,7 +23,7 @@ ask configure
 # each option is optional, pretty enter to skip
 ```
 
-You can also edit `~/.config/shell-ask/config.json` directly, check out the [JSON schema](./schema.json) for all available options.
+You can also edit `~/.config/shell-ask/config.json` directly, check out the [JSON schema](./schema.json) or [Type definition](./src/config.ts) for all available options.
 
 ## Usage
 
