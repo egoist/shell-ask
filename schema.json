@@ -1,0 +1,8 @@
+{
+  "type": "object",
+  "properties": {
+    "default_model": { "type": "string" },
+    "openai_api_key": { "type": "string" },
+    "anthropic_api_key": { "type": "string" }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "shell-ask",
+  "version": "0.0.3",
+  "description": "Ask LLM any question in your terminal",
+  "type": "module",
+  "bin": {
+    "ask": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "schema.json"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/egoist/shell-ask"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "pnpm build --watch",
+    "prepublishOnly": "pnpm build"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^0.0.14",
+    "@ai-sdk/openai": "^0.0.13",
+    "ai": "^3.1.12",
+    "cac": "^6.7.14",
+    "ollama-ai-provider": "^0.7.0",
+    "prompts": "^2.4.2",
+    "update-notifier": "^7.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.12.12",
+    "@types/prompts": "^2.4.9",
+    "@types/update-notifier": "^6.0.8",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.5"
+  },
+  "license": "MIT"
+}
