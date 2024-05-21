@@ -59,6 +59,20 @@ ask "question" -m gpt-4o
 ask "question" -m claude-3-opus
 ```
 
+## Piping
+
+You can pipe the output of other programs to `ask`, for example you can use `cat` to add file contents to the LLM context:
+
+```bash
+cat main.ts | ask "explain the code"
+```
+
+If you want to add multiple files, use [bat](https://github.com/sharkdp/bat) instead:
+
+```bash
+bat src/*.ts | ask "write a concise outline for this project"
+```
+
 ## AI Command Presets
 
 Shell Ask allows you to define reusable AI commands in the config file `~/.config/shell-ask/config.json`, for example the builtin `ask cm` command:
