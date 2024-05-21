@@ -11,6 +11,9 @@
     "openai_api_url": {
       "type": "string"
     },
+    "gemini_api_key": {
+      "type": "string"
+    },
     "anthropic_api_key": {
       "type": "string"
     },
@@ -53,6 +56,9 @@
                       "type": "string",
                       "enum": ["select"]
                     },
+                    "message": {
+                      "type": "string"
+                    },
                     "choices": {
                       "type": "array",
                       "items": {
@@ -70,7 +76,7 @@
                       }
                     }
                   },
-                  "required": ["type", "choices"],
+                  "required": ["type", "message", "choices"],
                   "additionalProperties": false
                 }
               ]
@@ -78,6 +84,9 @@
           },
           "prompt": {
             "type": "string"
+          },
+          "requireStdin": {
+            "type": "boolean"
           }
         },
         "required": ["command", "prompt"],

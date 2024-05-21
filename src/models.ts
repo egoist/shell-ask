@@ -30,6 +30,19 @@ export const MODEL_MAP: {
       realId: "claude-3-opus-20240229",
     },
   ],
+  gemini: [
+    {
+      id: "gemini-1.5-pro",
+      realId: "gemini-1.5-pro-latest",
+    },
+    {
+      id: "gemini-1.5-flash",
+      realId: "gemini-1.5-flash-latest",
+    },
+    {
+      id: "gemini-pro",
+    },
+  ],
 }
 
 export const MODELS = Object.values(MODEL_MAP).flat()

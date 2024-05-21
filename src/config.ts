@@ -28,10 +28,12 @@ export type AICommand = {
   requireStdin?: boolean
 }
 
+// no addtional property allowed
 export type Config = {
   default_model?: string
   openai_api_key?: string
   openai_api_url?: string
+  gemini_api_key?: string
   anthropic_api_key?: string
   commands?: AICommand[]
 }

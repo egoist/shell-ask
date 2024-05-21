@@ -15,6 +15,7 @@ npm i -g shell-ask
 - OpenAI
 - Anthropic
 - Ollama
+- Google Gemini
 
 ## Configuration
 

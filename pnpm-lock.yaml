@@ -11,6 +11,9 @@ importers:
       '@ai-sdk/anthropic':
         specifier: ^0.0.14
         version: 0.0.14(zod@3.23.8)
+      '@ai-sdk/google':
+        specifier: ^0.0.14
+        version: 0.0.14(zod@3.23.8)
       '@ai-sdk/openai':
         specifier: ^0.0.13
         version: 0.0.13(zod@3.23.8)
@@ -50,6 +53,15 @@ packages:
 
   '@ai-sdk/anthropic@0.0.14':
     resolution: {integrity: sha512-yQbmngQ08h6/6hkfEZuNg5fzXM/aHDoCSyD7L9c7gEYBhwlbVZaQclORdmK0jrOCvuqJc3dlWTimc8niaeyeFw==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      zod: ^3.0.0
+    peerDependenciesMeta:
+      zod:
+        optional: true
+
+  '@ai-sdk/google@0.0.14':
+    resolution: {integrity: sha512-4a+g7iZThrTC2nGFf4ud1td2jqJjxr8QGLCP6+xBjRK70DHFf9RZrTxclOz8oXY+IIHYLIo5ybctV9TUH4u1qQ==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.0.0
@@ -1387,6 +1399,13 @@ packages:
 snapshots:
 
   '@ai-sdk/anthropic@0.0.14(zod@3.23.8)':
+    dependencies:
+      '@ai-sdk/provider': 0.0.5
+      '@ai-sdk/provider-utils': 0.0.8(zod@3.23.8)
+    optionalDependencies:
+      zod: 3.23.8
+
+  '@ai-sdk/google@0.0.14(zod@3.23.8)':
     dependencies:
       '@ai-sdk/provider': 0.0.5
       '@ai-sdk/provider-utils': 0.0.8(zod@3.23.8)

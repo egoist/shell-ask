@@ -1,6 +1,7 @@
 import { createOpenAI } from "@ai-sdk/openai"
 import { createAnthropic } from "@ai-sdk/anthropic"
 import { CoreMessage, generateText, streamText } from "ai"
+import { createGoogleGenerativeAI } from "@ai-sdk/google"
 import { createOllama } from "ollama-ai-provider"
 import { notEmpty } from "./utils"
 import { loadConfig } from "./config"
@@ -82,6 +83,11 @@ export async function ask(
     : modelId.startsWith("claude-")
     ? createAnthropic({
         apiKey: config.anthropic_api_key,
+      })
+    : modelId.startsWith("gemini-")
+    ? createGoogleGenerativeAI({
+        apiKey: config.gemini_api_key,
+        baseURL: "https://generativelanguage.googleapis.com/v1beta/models",
       })
     : createOpenAI({
         apiKey: config.openai_api_key,

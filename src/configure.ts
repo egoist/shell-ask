@@ -25,6 +25,11 @@ export async function configure() {
       name: "anthropic_api_key",
       message: "Anthropic API Key",
     },
+    {
+      type: "password",
+      name: "gemini_api_key",
+      message: "Gemini API Key",
+    },
   ])
 
   const newConfig = { ...config }
@@ -46,6 +51,10 @@ export async function configure() {
     result.anthropic_api_key
   ) {
     newConfig.anthropic_api_key = result.anthropic_api_key
+  }
+
+  if (typeof result.gemini_api_key === "string" && result.gemini_api_key) {
+    newConfig.gemini_api_key = result.gemini_api_key
   }
 
   saveConfig(newConfig)
