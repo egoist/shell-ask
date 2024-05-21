@@ -1,5 +1,7 @@
 # shell-ask
 
+![preview](https://cdn.jsdelivr.net/gh/egoist-bot/images@main/uPic/js3Bja.png)
+
 ## Install
 
 This requires Node.js to be installed.
