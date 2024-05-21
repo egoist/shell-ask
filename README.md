@@ -58,6 +58,31 @@ ask "question" -m gpt-4o
 ask "question" -m claude-3-opus
 ```
 
+## AI Command Presets
+
+Shell Ask allows you to define reusable AI commands in the config file `~/.config/shell-ask/config.json`, for example the builtin `ask cm` command:
+
+```json
+{
+  "commands": [
+    {
+      "command": "cm",
+      "description": "Generate git commit message based on git diff output",
+      "prompt": "Generate git commit message following Conventional Commits specification based on the git diff output in stdin\nYou must return a commit message only, without any other text or quotes."
+    }
+  ]
+}
+```
+
+Check out the[ type definition](./src/config.ts) for AI command definition.
+
+### Built-in AI Command Presets
+
+- `ask cm`: Generate git commit message from stdin
+  - example: `git diff | ask cm`
+- `ask type-to-json-schema`: Generate JSON schema for a TypeScript type from stdin
+  - example: `cat mod.ts | ask type-to-json-schema --typeName SomeType`
+
 ## License
 
 MIT.

@@ -8,34 +8,10 @@ import { MODEL_PREFIXES, getAllModels } from "./models"
 import cliPrompts from "prompts"
 import { stdin } from "./tty"
 
-// ifconfig | ask "what is my ip"
-const readPipeInput = async () => {
-  // not piped input
-  if (process.stdin.isTTY) return ""
-
-  return new Promise<string>((resolve, reject) => {
-    let data = ""
-
-    process.stdin.on("data", (chunk) => {
-      data += chunk
-    })
-
-    process.stdin.on("end", () => {
-      resolve(data)
-    })
-
-    process.stdin.on("error", (err) => {
-      reject(err)
-    })
-  })
-}
-
 export async function ask(
   prompt: string | undefined,
-  options: { model?: string; command?: boolean }
+  options: { model?: string; command?: boolean; pipeInput?: string }
 ) {
-  const pipeInput = await readPipeInput()
-
   const messages: CoreMessage[] = []
 
   if (!prompt) {
@@ -47,7 +23,7 @@ export async function ask(
     role: "system",
     content: [
       `shell: ${process.env.SHELL || "unknown"}`,
-      pipeInput && `stdin: ${pipeInput}`,
+      options.pipeInput && `stdin: ${options.pipeInput}`,
     ]
       .filter(notEmpty)
       .join("\n"),

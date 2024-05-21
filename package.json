@@ -1,6 +1,6 @@
 {
   "name": "shell-ask",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Ask LLM any question in your terminal",
   "type": "module",
   "bin": {
@@ -17,7 +17,8 @@
   "scripts": {
     "build": "tsup",
     "dev": "pnpm build --watch",
-    "prepublishOnly": "pnpm build"
+    "prepublishOnly": "pnpm build",
+    "gen-schema": "cat ./src/config.ts | bun ./src/cli.ts type-to-json-schema --model gpt-4o --typeName Config"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^0.0.14",
