@@ -2,6 +2,10 @@
 
 ![preview](https://cdn.jsdelivr.net/gh/egoist-bot/images@main/uPic/js3Bja.png)
 
+---
+
+**Shell Ask is sponsored by [ChatKit](https://chatkit.app), a free chat app for ChatGPT and many other models.**
+
 ## Install
 
 This requires Node.js to be installed.
