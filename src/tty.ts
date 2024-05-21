@@ -1,5 +1,5 @@
-import tty from "tty"
-import fs from "fs"
+import tty from "node:tty"
+import fs from "node:fs"
 
 export const stdin = process.stdin.isTTY
   ? process.stdin

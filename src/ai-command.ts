@@ -1,4 +1,4 @@
-import { exec } from "child_process"
+import { exec } from "node:child_process"
 import { AICommand, AICommandVariable, Config } from "./config"
 import { stdin } from "./tty"
 import prompts from "prompts"

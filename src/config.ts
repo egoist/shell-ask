@@ -1,6 +1,6 @@
-import fs from "fs"
-import os from "os"
-import path from "path"
+import fs from "node:fs"
+import os from "node:os"
+import path from "node:path"
 
 const configDirPath = path.join(os.homedir(), ".config", "shell-ask")
 export const configFilePath = path.join(configDirPath, "config.json")
