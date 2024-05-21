@@ -8,6 +8,7 @@ export const configFilePath = path.join(configDirPath, "config.json")
 type Config = {
   default_model?: string
   openai_api_key?: string
+  openai_api_url?: string
   anthropic_api_key?: string
 }
 

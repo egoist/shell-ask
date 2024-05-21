@@ -16,6 +16,11 @@ export async function configure() {
       message: "OpenAI API Key",
     },
     {
+      type: "text",
+      name: "openai_api_url",
+      message: "OpenAI API URL",
+    },
+    {
       type: "password",
       name: "anthropic_api_key",
       message: "Anthropic API Key",
@@ -30,6 +35,10 @@ export async function configure() {
 
   if (typeof result.openai_api_key === "string" && result.openai_api_key) {
     newConfig.openai_api_key = result.openai_api_key
+  }
+
+  if (typeof result.openai_api_url === "string" && result.openai_api_url) {
+    newConfig.openai_api_url = result.openai_api_url
   }
 
   if (
