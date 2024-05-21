@@ -69,7 +69,7 @@ async function main() {
       const { model, ...localFlags } = flags
       const pipeInput = await readPipeInput()
 
-      if (command.requireStdin && !pipeInput) {
+      if (command.require_stdin && !pipeInput) {
         console.error(
           `This command requires piping input from another program to Shell Ask, e.g. \`echo 'input' | ask ${command.command}\``
         )

@@ -25,7 +25,7 @@ export type AICommand = {
   variables?: Record<string, AICommandVariable>
   prompt: string
   /** Require piping output from another program to Shell Ask */
-  requireStdin?: boolean
+  require_stdin?: boolean
 }
 
 // no addtional property allowed

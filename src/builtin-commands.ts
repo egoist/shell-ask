@@ -4,7 +4,7 @@ export const builtinCommands: AICommand[] = [
   {
     command: "cm",
     description: "Generate git commit message based on git diff output",
-    requireStdin: true,
+    require_stdin: true,
     prompt:
       "Generate git commit message following Conventional Commits specification based on the git diff output in stdin\nYou must return a commit message only, without any other text or quotes.",
   },
@@ -17,7 +17,7 @@ export const builtinCommands: AICommand[] = [
         message: "Type name",
       },
     },
-    requireStdin: true,
+    require_stdin: true,
     prompt: `Generate JSON schema from the "{{typeName}}" type in stdin. You must return the JSON string only, without any other text or quotes.`,
   },
 ]

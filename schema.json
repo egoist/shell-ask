@@ -85,7 +85,7 @@
           "prompt": {
             "type": "string"
           },
-          "requireStdin": {
+          "require_stdin": {
             "type": "boolean"
           }
         },
