@@ -1,5 +1,5 @@
 import { CoreMessage, generateText, streamText } from "ai"
-import { notEmpty } from "./utils"
+import { loadFiles, notEmpty } from "./utils"
 import { loadConfig } from "./config"
 import { MODEL_PREFIXES, getAllModels } from "./models"
 import cliPrompts from "prompts"
@@ -9,7 +9,12 @@ import { getSDKModel } from "./ai-sdk"
 
 export async function ask(
   prompt: string | undefined,
-  options: { model?: string; command?: boolean; pipeInput?: string }
+  options: {
+    model?: string
+    command?: boolean
+    pipeInput?: string
+    files?: string | string[]
+  }
 ) {
   const messages: CoreMessage[] = []
 
@@ -17,11 +22,15 @@ export async function ask(
     throw new CliError("please provide a prompt")
   }
 
+  const files = await loadFiles(options.files || [])
   messages.push({
     role: "system",
     content: [
+      `Context:`,
       `shell: ${process.env.SHELL || "unknown"}`,
       options.pipeInput && `stdin: ${options.pipeInput}`,
+      files.length > 0 && "files:",
+      ...files.map((file) => `${file.name}:\n"""\n${file.content}\n"""`),
     ]
       .filter(notEmpty)
       .join("\n"),

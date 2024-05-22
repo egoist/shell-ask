@@ -23,6 +23,9 @@ importers:
       cac:
         specifier: ^6.7.14
         version: 6.7.14
+      fast-glob:
+        specifier: ^3.3.2
+        version: 3.3.2
       ollama-ai-provider:
         specifier: ^0.7.0
         version: 0.7.0(zod@3.23.8)

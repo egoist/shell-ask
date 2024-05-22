@@ -26,6 +26,7 @@
     "@ai-sdk/openai": "^0.0.13",
     "ai": "^3.1.12",
     "cac": "^6.7.14",
+    "fast-glob": "^3.3.2",
     "ollama-ai-provider": "^0.7.0",
     "prompts": "^2.4.2",
     "update-notifier": "^7.0.0",

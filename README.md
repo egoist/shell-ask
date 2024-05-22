@@ -66,10 +66,10 @@ You can pipe the output of other programs to `ask`, for example you can use `cat
 cat main.ts | ask "explain the code"
 ```
 
-If you want to add multiple files, use [bat](https://github.com/sharkdp/bat) instead:
+If you want to add multiple files, especially when you also want to include filenames in the context, you can use `--files` flag to add files into model context:
 
 ```bash
-bat src/*.ts | ask "write a concise outline for this project"
+ask --files "src/*.ts " "write a concise outline for this project"
 ```
 
 ## Reusable AI Commands
