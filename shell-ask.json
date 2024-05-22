@@ -1,0 +1,15 @@
+{
+  "$schema": "./schema.json",
+  "default_model": "gpt-4o",
+  "commands": [
+    {
+      "command": "gen-config-md",
+      "description": "Gnerate config.md docs from Config type",
+      "variables": {
+        "code": "cat src/config.ts",
+        "config": "cat docs/config.md"
+      },
+      "prompt": "Given code:\n```ts\n{{code}}\n```\nUpdate the documentation for the Config type in the code if changes are required, return the markdown only if changes are made, or NONE if unchanged, existing documentation:\n{{config}}"
+    }
+  ]
+}

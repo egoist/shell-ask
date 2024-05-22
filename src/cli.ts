@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 import { cac, Command as CliCommand } from "cac"
-import { configure } from "./configure"
-import { configFilePath, loadConfig } from "./config"
 import { getAllModels } from "./models"
 import updateNotifier from "update-notifier"
 import { ask } from "./ask"
 import { getAllCommands, getPrompt } from "./ai-command"
 import { readPipeInput } from "./tty"
+import { CliError } from "./error"
+import { loadConfig } from "./config"
 
 if (process.env.PKG_NAME && process.env.PKG_VERSION) {
   updateNotifier({
@@ -34,11 +34,6 @@ async function main() {
       await ask(prompt, { ...flags, pipeInput })
     })
 
-  cli.command("configure", "Configure models").action(async () => {
-    console.log("config file", configFilePath)
-    await configure()
-  })
-
   cli
     .command("list", "List available models")
     .alias("ls")
@@ -56,6 +51,10 @@ async function main() {
 
     applyCommonFlags(c)
 
+    if (command.example) {
+      c.example(command.example)
+    }
+
     if (command.variables) {
       for (const variableName in command.variables) {
         const value = command.variables[variableName]
@@ -70,10 +69,9 @@ async function main() {
       const pipeInput = await readPipeInput()
 
       if (command.require_stdin && !pipeInput) {
-        console.error(
-          `This command requires piping input from another program to Shell Ask, e.g. \`echo 'input' | ask ${command.command}\``
+        throw new CliError(
+          `this command requires piping input from another program to Shell Ask, e.g. \`echo 'input' | ask ${command.command}\``
         )
-        process.exit(1)
       }
 
       const prompt = await getPrompt(
@@ -85,8 +83,20 @@ async function main() {
     })
   }
 
+  cli.version(process.env.PKG_VERSION || "0.0.0")
   cli.help()
-  cli.parse()
+
+  try {
+    cli.parse(process.argv, { run: false })
+    await cli.runMatchedCommand()
+  } catch (error) {
+    process.exitCode = 1
+    if (error instanceof CliError) {
+      console.error(error.message)
+    } else {
+      throw error
+    }
+  }
 }
 
 main()

@@ -1,44 +1,64 @@
 import fs from "node:fs"
 import os from "node:os"
 import path from "node:path"
+import { z } from "zod"
 
 const configDirPath = path.join(os.homedir(), ".config", "shell-ask")
 export const configFilePath = path.join(configDirPath, "config.json")
 
-export type AICommandVariable =
-  // A shell command to run, the output will be used as the variable value
-  | string
-  // Get text input from the user
-  | { type: "input"; message: string }
-  // Get a choice from the user
-  | {
-      type: "select"
-      message: string
-      choices: { value: string; title: string }[]
-    }
+const AICommandVariableSchema = z.union([
+  z.string().describe("a shell command to run"),
+  z
+    .object({
+      type: z.literal("input"),
+      message: z.string(),
+    })
+    .describe("get text input from the user"),
+  z
+    .object({
+      type: z.literal("select"),
+      message: z.string(),
+      choices: z.array(
+        z.object({
+          value: z.string(),
+          title: z.string(),
+        })
+      ),
+    })
+    .describe("get a choice from the user"),
+])
 
-export type AICommand = {
-  /** the cli command */
-  command: string
-  /** description to show in cli help */
-  description?: string
-  variables?: Record<string, AICommandVariable>
-  prompt: string
-  /** Require piping output from another program to Shell Ask */
-  require_stdin?: boolean
-}
+export type AICommandVariable = z.infer<typeof AICommandVariableSchema>
 
-// no addtional property allowed
-export type Config = {
-  default_model?: string
-  openai_api_key?: string
-  openai_api_url?: string
-  gemini_api_key?: string
-  anthropic_api_key?: string
-  commands?: AICommand[]
-}
+const AICommandSchema = z.object({
+  command: z.string().describe("the cli command"),
+  example: z.string().optional().describe("example to show in cli help"),
+  description: z
+    .string()
+    .optional()
+    .describe("description to show in cli help"),
+  variables: z.record(AICommandVariableSchema).optional(),
+  prompt: z.string().describe("the prompt to send to the model"),
+  require_stdin: z
+    .boolean()
+    .optional()
+    .describe("Require piping output from another program to Shell Ask"),
+})
 
-export function loadConfig(): Config {
+export type AICommand = z.infer<typeof AICommandSchema>
+
+export const ConfigSchema = z.object({
+  default_model: z.string().optional(),
+  openai_api_key: z.string().optional(),
+  openai_api_url: z.string().optional(),
+  gemini_api_key: z.string().optional(),
+  anthropic_api_key: z.string().optional(),
+  commands: z.array(AICommandSchema).optional(),
+})
+
+export type Config = z.infer<typeof ConfigSchema>
+
+function loadGlobalConfig(): Config {
   try {
     return JSON.parse(fs.readFileSync(configFilePath, "utf-8"))
   } catch {
@@ -46,7 +66,24 @@ export function loadConfig(): Config {
   }
 }
 
-export function saveConfig(config: Config) {
-  fs.mkdirSync(configDirPath, { recursive: true })
-  fs.writeFileSync(configFilePath, JSON.stringify(config, null, 2))
+function loadLocalConfig(): Config {
+  try {
+    return JSON.parse(fs.readFileSync("shell-ask.json", "utf-8"))
+  } catch {
+    return {}
+  }
+}
+
+export function loadConfig(): Config {
+  const globalConfig = loadGlobalConfig()
+  const localConfig = loadLocalConfig()
+
+  return {
+    ...globalConfig,
+    ...localConfig,
+    commands: [
+      ...(globalConfig.commands || []),
+      ...(localConfig.commands || []),
+    ],
+  }
 }

@@ -1,98 +1,127 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "type": "object",
-  "properties": {
-    "default_model": {
-      "type": "string"
-    },
-    "openai_api_key": {
-      "type": "string"
-    },
-    "openai_api_url": {
-      "type": "string"
-    },
-    "gemini_api_key": {
-      "type": "string"
-    },
-    "anthropic_api_key": {
-      "type": "string"
-    },
-    "commands": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "command": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "variables": {
-            "type": "object",
-            "additionalProperties": {
-              "oneOf": [
-                {
-                  "type": "string"
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "type": {
-                      "type": "string",
-                      "enum": ["input"]
-                    },
-                    "message": {
-                      "type": "string"
-                    }
-                  },
-                  "required": ["type", "message"],
-                  "additionalProperties": false
-                },
-                {
-                  "type": "object",
-                  "properties": {
-                    "type": {
-                      "type": "string",
-                      "enum": ["select"]
-                    },
-                    "message": {
-                      "type": "string"
-                    },
-                    "choices": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "value": {
-                            "type": "string"
-                          },
-                          "title": {
-                            "type": "string"
-                          }
-                        },
-                        "required": ["value", "title"],
-                        "additionalProperties": false
-                      }
-                    }
-                  },
-                  "required": ["type", "message", "choices"],
-                  "additionalProperties": false
-                }
-              ]
-            }
-          },
-          "prompt": {
-            "type": "string"
-          },
-          "require_stdin": {
-            "type": "boolean"
-          }
+  "$ref": "#/definitions/Config",
+  "definitions": {
+    "Config": {
+      "type": "object",
+      "properties": {
+        "default_model": {
+          "type": "string"
         },
-        "required": ["command", "prompt"],
-        "additionalProperties": false
-      }
+        "openai_api_key": {
+          "type": "string"
+        },
+        "openai_api_url": {
+          "type": "string"
+        },
+        "gemini_api_key": {
+          "type": "string"
+        },
+        "anthropic_api_key": {
+          "type": "string"
+        },
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "command": {
+                "type": "string",
+                "description": "the cli command"
+              },
+              "example": {
+                "type": "string",
+                "description": "example to show in cli help"
+              },
+              "description": {
+                "type": "string",
+                "description": "description to show in cli help"
+              },
+              "variables": {
+                "type": "object",
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "description": "a shell command to run"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "input"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "message"
+                      ],
+                      "additionalProperties": false,
+                      "description": "get text input from the user"
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "select"
+                        },
+                        "message": {
+                          "type": "string"
+                        },
+                        "choices": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "value": {
+                                "type": "string"
+                              },
+                              "title": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "value",
+                              "title"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "message",
+                        "choices"
+                      ],
+                      "additionalProperties": false,
+                      "description": "get a choice from the user"
+                    }
+                  ]
+                }
+              },
+              "prompt": {
+                "type": "string",
+                "description": "the prompt to send to the model"
+              },
+              "require_stdin": {
+                "type": "boolean",
+                "description": "Require piping output from another program to Shell Ask"
+              }
+            },
+            "required": [
+              "command",
+              "prompt"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "additionalProperties": false
     }
   },
-  "additionalProperties": false
+  "$schema": "http://json-schema.org/draft-07/schema#"
 }

@@ -1,13 +1,11 @@
-import { createOpenAI } from "@ai-sdk/openai"
-import { createAnthropic } from "@ai-sdk/anthropic"
 import { CoreMessage, generateText, streamText } from "ai"
-import { createGoogleGenerativeAI } from "@ai-sdk/google"
-import { createOllama } from "ollama-ai-provider"
 import { notEmpty } from "./utils"
 import { loadConfig } from "./config"
 import { MODEL_PREFIXES, getAllModels } from "./models"
 import cliPrompts from "prompts"
 import { stdin } from "./tty"
+import { CliError } from "./error"
+import { getSDKModel } from "./ai-sdk"
 
 export async function ask(
   prompt: string | undefined,
@@ -16,8 +14,7 @@ export async function ask(
   const messages: CoreMessage[] = []
 
   if (!prompt) {
-    console.error("please provide a prompt")
-    process.exit(1)
+    throw new CliError("please provide a prompt")
   }
 
   messages.push({
@@ -70,7 +67,7 @@ export async function ask(
     ])
 
     if (typeof result.modelId !== "string" || !result.modelId) {
-      throw new Error("no model selected")
+      throw new CliError("no model selected")
     }
 
     modelId = result.modelId
@@ -78,21 +75,7 @@ export async function ask(
 
   const realModelId = models.find((m) => m.id === modelId)?.realId || modelId
 
-  const model = modelId.startsWith("ollama-")
-    ? createOllama()
-    : modelId.startsWith("claude-")
-    ? createAnthropic({
-        apiKey: config.anthropic_api_key,
-      })
-    : modelId.startsWith("gemini-")
-    ? createGoogleGenerativeAI({
-        apiKey: config.gemini_api_key,
-        baseURL: "https://generativelanguage.googleapis.com/v1beta/models",
-      })
-    : createOpenAI({
-        apiKey: config.openai_api_key,
-        baseURL: config.openai_api_url,
-      })
+  const model = getSDKModel(modelId, config)
 
   // @ts-expect-error Bun doesn't support TextDecoderStream
   if (typeof Bun !== "undefined") {

@@ -15,10 +15,10 @@
     "url": "https://github.com/egoist/shell-ask"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "pnpm gen-config-schema && tsup",
     "dev": "pnpm build --watch",
     "prepublishOnly": "pnpm build",
-    "gen-schema": "cat ./src/config.ts | bun ./src/cli.ts type-to-json-schema --model gpt-4o --typeName Config"
+    "gen-config-schema": "bun scripts/gen-config-schema.ts"
   },
   "dependencies": {
     "@ai-sdk/anthropic": "^0.0.14",
@@ -36,7 +36,8 @@
     "@types/prompts": "^2.4.9",
     "@types/update-notifier": "^6.0.8",
     "tsup": "^8.0.2",
-    "typescript": "^5.4.5"
+    "typescript": "^5.4.5",
+    "zod-to-json-schema": "^3.23.0"
   },
   "license": "MIT"
 }

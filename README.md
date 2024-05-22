@@ -23,12 +23,7 @@ npm i -g shell-ask
 
 ## Configuration
 
-```bash
-ask configure
-# each option is optional, pretty enter to skip
-```
-
-You can also edit `~/.config/shell-ask/config.json` directly, check out the [JSON schema](./schema.json) or [Type definition](./src/config.ts) for all available options.
+[Config documentation](./docs/config.md)
 
 ## Usage
 
@@ -79,7 +74,7 @@ bat src/*.ts | ask "write a concise outline for this project"
 
 ## AI Command Presets
 
-Shell Ask allows you to define reusable AI commands in the config file `~/.config/shell-ask/config.json`, for example the builtin `ask cm` command:
+Shell Ask allows you to define reusable AI commands in the [config file](./docs/config.md), for example the builtin `ask cm` command:
 
 ```json
 {
@@ -92,8 +87,6 @@ Shell Ask allows you to define reusable AI commands in the config file `~/.confi
   ]
 }
 ```
-
-Check out the[ type definition](./src/config.ts) for AI command definition.
 
 ### Built-in AI Command Presets
 
