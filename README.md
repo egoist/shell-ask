@@ -72,7 +72,7 @@ If you want to add multiple files, use [bat](https://github.com/sharkdp/bat) ins
 bat src/*.ts | ask "write a concise outline for this project"
 ```
 
-## AI Command Presets
+## Reusable AI Commands
 
 Shell Ask allows you to define reusable AI commands in the [config file](./docs/config.md), for example the builtin `ask cm` command:
 
@@ -88,12 +88,10 @@ Shell Ask allows you to define reusable AI commands in the [config file](./docs/
 }
 ```
 
-### Built-in AI Command Presets
+### Built-in AI Commands
 
 - `ask cm`: Generate git commit message from stdin
   - example: `git diff | ask cm`
-- `ask type-to-json-schema`: Generate JSON schema for a TypeScript type from stdin
-  - example: `cat mod.ts | ask type-to-json-schema --typeName SomeType`
 
 ## License
 
