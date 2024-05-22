@@ -4,7 +4,7 @@
   "commands": [
     {
       "command": "gen-config-md",
-      "description": "Gnerate config.md docs from Config type",
+      "description": "Generate config.md docs from Config type",
       "variables": {
         "code": "cat src/config.ts",
         "config": "cat docs/config.md"
