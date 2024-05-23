@@ -23,7 +23,17 @@ npm i -g shell-ask
 
 ## Configuration
 
-[Config documentation](./docs/config.md)
+
+Minimal config to use OpenAI, create a `~/.config/shell-ask/config.json` with the following content:
+
+```json
+{
+  "openai_api_key": "sk-your-key-xxx"
+}
+```
+
+Check out [config documentation](./docs/config.md) for more.
+
 
 ## Usage
 
