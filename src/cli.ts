@@ -17,6 +17,10 @@ if (process.env.PKG_NAME && process.env.PKG_VERSION) {
 function applyCommonFlags(command: CliCommand) {
   command.option("-m, --model <model>", "Choose the LLM to use")
   command.option("--files <pattern>", "Adding files to model context")
+  command.option(
+    "-t, --type <type>",
+    "Define the shape of the response in TypeScript"
+  )
   return command
 }
 
@@ -67,7 +71,7 @@ async function main() {
     }
 
     c.action(async (flags) => {
-      const { model, files, ...localFlags } = flags
+      const { model, files, type, ...localFlags } = flags
       const pipeInput = await readPipeInput()
 
       if (command.require_stdin && !pipeInput) {
@@ -81,7 +85,7 @@ async function main() {
         command.variables,
         localFlags
       )
-      await ask(prompt, { model, pipeInput, files })
+      await ask(prompt, { model, pipeInput, files, type })
     })
   }
 

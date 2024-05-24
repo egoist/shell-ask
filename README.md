@@ -82,6 +82,26 @@ If you want to add multiple files, especially when you also want to include file
 ask --files "src/*.ts " "write a concise outline for this project"
 ```
 
+## Result Type
+
+### Command
+
+Using `-c` or `--command` flag to enforce the output to be a command only:
+
+```bash
+ask "turn foo.mp4 to 720p using ffmpeg" -c
+```
+
+### Custom Type
+
+Define the type of the result using `-t` or `--type` flag:
+
+```bash
+cat package.json | ask "extract dependency names" -t "string[]"
+
+cat README.md | ask "extract headings" -t "{depth:number,title:string}[]"
+```
+
 ## Reusable AI Commands
 
 Shell Ask allows you to define reusable AI commands in the [config file](./docs/config.md), for example the builtin `ask cm` command:

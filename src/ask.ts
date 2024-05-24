@@ -6,6 +6,7 @@ import cliPrompts from "prompts"
 import { stdin } from "./tty"
 import { CliError } from "./error"
 import { getSDKModel } from "./ai-sdk"
+import { debug } from "./debug"
 
 export async function ask(
   prompt: string | undefined,
@@ -14,6 +15,7 @@ export async function ask(
     command?: boolean
     pipeInput?: string
     files?: string | string[]
+    type?: string
   }
 ) {
   const messages: CoreMessage[] = []
@@ -28,7 +30,8 @@ export async function ask(
     content: [
       `Context:`,
       `shell: ${process.env.SHELL || "unknown"}`,
-      options.pipeInput && `stdin: ${options.pipeInput}`,
+      options.pipeInput &&
+        [`stdin:`, "```", options.pipeInput, "```"].join("\n"),
       files.length > 0 && "files:",
       ...files.map((file) => `${file.name}:\n"""\n${file.content}\n"""`),
     ]
@@ -41,10 +44,21 @@ export async function ask(
     content: [
       prompt,
       options.command ? `Return the command only without any other text.` : ``,
+      options.type
+        ? [
+            `The result must match the following type definition:`,
+            "```typescript",
+            options.type,
+            "```",
+            "Return the result only without any other text or markdown code fences.",
+          ].join("\n")
+        : ``,
     ]
       .filter(notEmpty)
       .join("\n"),
   })
+
+  debug("messages", messages)
 
   const config = loadConfig()
   let modelId = options.model || config.default_model || "gpt-3.5-turbo"
@@ -83,6 +97,8 @@ export async function ask(
   }
 
   const realModelId = models.find((m) => m.id === modelId)?.realId || modelId
+
+  debug("model", realModelId)
 
   const model = getSDKModel(modelId, config)
 
