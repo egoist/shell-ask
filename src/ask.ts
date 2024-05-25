@@ -31,7 +31,7 @@ export async function ask(
     throw new CliError("please provide a prompt")
   }
 
-  const chat = loadChat()
+  const chat = options.reply ? loadChat() : null
   const config = loadConfig()
   let modelId =
     options.model ||
