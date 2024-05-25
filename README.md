@@ -23,7 +23,6 @@ npm i -g shell-ask
 
 ## Configuration
 
-
 Minimal config to use OpenAI, create a `~/.config/shell-ask/config.json` with the following content:
 
 ```json
@@ -33,7 +32,6 @@ Minimal config to use OpenAI, create a `~/.config/shell-ask/config.json` with th
 ```
 
 Check out [config documentation](./docs/config.md) for more.
-
 
 ## Usage
 
@@ -100,6 +98,36 @@ Define the type of the result using `-t` or `--type` flag:
 cat package.json | ask "extract dependency names" -t "string[]"
 
 cat README.md | ask "extract headings" -t "{depth:number,title:string}[]"
+```
+
+### Web Search
+
+Enable web search by using `-s` or `--search` flag:
+
+```bash
+ask -s "how to delete a docker image"
+```
+
+Web search is powered by https://s.jina.ai
+
+### Fetching Web Pages
+
+For a single page, you can just use `curl`:
+
+```bash
+curl -s https://example.com | ask "summarize it"
+```
+
+For multiple pages, you can use `-u` or `--url` flag:
+
+```bash
+ask -u https://example.com/about -u https://example.com/introduction "summarize it"
+```
+
+You may only need the markdown output of the web page, you can use https://r.jina.ai to retrive markdown content instead:
+
+```bash
+ask -u https://r.jina.ai/example.com "summarize it"
 ```
 
 ## Reusable AI Commands
