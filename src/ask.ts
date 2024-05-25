@@ -72,32 +72,32 @@ export async function ask(
 
   const files = await loadFiles(options.files || [])
   const remoteContents = await fetchUrl(options.url || [])
+  const context = [
+    `Context:`,
+    `shell: ${process.env.SHELL || "unknown"}`,
+    options.pipeInput && [`stdin:`, "```", options.pipeInput, "```"].join("\n"),
+
+    files.length > 0 && "files:",
+    ...files.map((file) => `${file.name}:\n"""\n${file.content}\n"""`),
+
+    remoteContents.length > 0 && "remote contents:",
+    ...remoteContents.map(
+      (content) => `${content.url}:\n"""\n${content.content}\n"""`
+    ),
+  ]
+    .filter(notEmpty)
+    .join("\n")
 
   let searchResult: string | undefined
 
   if (options.search) {
     const searchModel = model(getCheapModelId(realModelId))
-    searchResult = await getSearchResult(searchModel, prompt)
+    searchResult = await getSearchResult(searchModel, { context, prompt })
   }
 
   messages.push({
     role: "system",
-    content: [
-      `Context:`,
-      `shell: ${process.env.SHELL || "unknown"}`,
-      options.pipeInput &&
-        [`stdin:`, "```", options.pipeInput, "```"].join("\n"),
-      files.length > 0 && "files:",
-      ...files.map((file) => `${file.name}:\n"""\n${file.content}\n"""`),
-
-      remoteContents.length > 0 && "remote contents:",
-      ...remoteContents.map(
-        (content) => `${content.url}:\n"""\n${content.content}\n"""`
-      ),
-
-      searchResult && "search result:",
-      searchResult,
-    ]
+    content: [context, searchResult && "search result:", searchResult]
       .filter(notEmpty)
       .join("\n"),
   })

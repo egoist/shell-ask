@@ -17,11 +17,23 @@ const searchTool = tool({
   },
 })
 
-export const getSearchResult = async (model: LanguageModel, prompt: string) => {
+export const getSearchResult = async (
+  model: LanguageModel,
+  { context, prompt }: { context: string; prompt: string }
+) => {
   logUpdate("Starting search...")
   const result = await generateText({
     model,
-    prompt,
+    messages: [
+      {
+        role: "system",
+        content: context,
+      },
+      {
+        role: "user",
+        content: prompt,
+      },
+    ],
     tools: { search: searchTool },
   })
 
