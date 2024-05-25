@@ -7,6 +7,7 @@ import { stdin } from "./tty"
 import { CliError } from "./error"
 import { getSDKModel } from "./ai-sdk"
 import { debug } from "./debug"
+import { fetchUrl } from "./fetch-url"
 
 export async function ask(
   prompt: string | undefined,
@@ -16,6 +17,7 @@ export async function ask(
     pipeInput?: string
     files?: string | string[]
     type?: string
+    url?: string | string[]
   }
 ) {
   const messages: CoreMessage[] = []
@@ -25,6 +27,8 @@ export async function ask(
   }
 
   const files = await loadFiles(options.files || [])
+  const remoteContents = await fetchUrl(options.url || [])
+
   messages.push({
     role: "system",
     content: [
@@ -34,6 +38,11 @@ export async function ask(
         [`stdin:`, "```", options.pipeInput, "```"].join("\n"),
       files.length > 0 && "files:",
       ...files.map((file) => `${file.name}:\n"""\n${file.content}\n"""`),
+
+      remoteContents.length > 0 && "remote contents:",
+      ...remoteContents.map(
+        (content) => `${content.url}:\n"""\n${content.content}\n"""`
+      ),
     ]
       .filter(notEmpty)
       .join("\n"),

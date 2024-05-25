@@ -21,6 +21,7 @@ function applyCommonFlags(command: CliCommand) {
     "-t, --type <type>",
     "Define the shape of the response in TypeScript"
   )
+  command.option("-u,--url <url>", "Fetch URL content as context")
   return command
 }
 
@@ -71,7 +72,7 @@ async function main() {
     }
 
     c.action(async (flags) => {
-      const { model, files, type, ...localFlags } = flags
+      const { model, files, type, url, ...localFlags } = flags
       const pipeInput = await readPipeInput()
 
       if (command.require_stdin && !pipeInput) {
@@ -85,7 +86,7 @@ async function main() {
         command.variables,
         localFlags
       )
-      await ask(prompt, { model, pipeInput, files, type })
+      await ask(prompt, { model, pipeInput, files, type, url })
     })
   }
 
