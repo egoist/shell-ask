@@ -27,6 +27,7 @@
     "ai": "^3.1.12",
     "cac": "^6.7.14",
     "fast-glob": "^3.3.2",
+    "log-update": "^6.0.0",
     "ollama-ai-provider": "^0.7.0",
     "prompts": "^2.4.2",
     "update-notifier": "^7.0.0",
