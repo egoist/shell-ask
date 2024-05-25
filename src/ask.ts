@@ -10,6 +10,7 @@ import { debug } from "./debug"
 import { fetchUrl } from "./fetch-url"
 import { getSearchResult } from "./search"
 import logUpdate from "log-update"
+import { renderMarkdown } from "./markdown"
 
 export async function ask(
   prompt: string | undefined,
@@ -125,7 +126,7 @@ export async function ask(
 
   debug("messages", messages)
 
-  logUpdate("Waiting for response...")
+  logUpdate(`Waiting for ${realModelId} to respond...`)
 
   // @ts-expect-error Bun doesn't support TextDecoderStream
   if (typeof Bun !== "undefined") {
@@ -136,7 +137,7 @@ export async function ask(
     })
 
     logUpdate.clear()
-    console.log(result.text)
+    logUpdate(renderMarkdown(result.text).trim())
     process.exit()
   }
 
@@ -147,10 +148,11 @@ export async function ask(
   })
 
   logUpdate.clear()
+  let output = ""
   for await (const textPart of textStream) {
-    process.stdout.write(textPart)
+    output += textPart
+    logUpdate(renderMarkdown(output).trim())
   }
-  process.stdout.write("\n")
 
   process.exit()
 }
