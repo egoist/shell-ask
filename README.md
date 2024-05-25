@@ -130,6 +130,16 @@ You may only need the markdown output of the web page, you can use https://r.jin
 ask -u https://r.jina.ai/example.com "summarize it"
 ```
 
+### Disable Streaming Output
+
+Using `--no-stream` flag to disable streaming output:
+
+```bash
+ask "how to delete a docker image" --no-stream
+```
+
+When `--no-stream` is enabled the output markdown will have proper syntax highlighting, when streaming is enabled the output will be plain text because the terminal have trouble clearing the screen when the output is too long
+
 ## Reusable AI Commands
 
 Shell Ask allows you to define reusable AI commands in the [config file](./docs/config.md), for example the builtin `ask cm` command:

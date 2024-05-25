@@ -22,6 +22,7 @@ export async function ask(
     type?: string
     url?: string | string[]
     search?: boolean
+    stream?: boolean
   }
 ) {
   const messages: CoreMessage[] = []
@@ -129,7 +130,7 @@ export async function ask(
   logUpdate(`Waiting for ${realModelId} to respond...`)
 
   // @ts-expect-error Bun doesn't support TextDecoderStream
-  if (typeof Bun !== "undefined") {
+  if (options.stream === false || typeof Bun !== "undefined") {
     const result = await generateText({
       model: model(realModelId),
       messages,
@@ -148,11 +149,11 @@ export async function ask(
   })
 
   logUpdate.clear()
-  let output = ""
+
   for await (const textPart of textStream) {
-    output += textPart
-    logUpdate(renderMarkdown(output).trim())
+    process.stdout.write(textPart)
   }
+  process.stdout.write("\n")
 
   process.exit()
 }
