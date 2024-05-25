@@ -52,7 +52,9 @@ export async function ask(
     role: "user",
     content: [
       prompt,
-      options.command ? `Return the command only without any other text.` : ``,
+      options.command
+        ? `Return the command only without any other text or markdown code fences.`
+        : ``,
       options.type
         ? [
             `The result must match the following type definition:`,
