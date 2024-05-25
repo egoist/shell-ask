@@ -24,6 +24,7 @@ function applyCommonFlags(command: CliCommand) {
   command.option("-u,--url <url>", "Fetch URL content as context")
   command.option("-s, --search", "Enable web search")
   command.option("--no-stream", "Disable streaming output")
+  command.option("-r, --reply", "Reply to previous conversation")
   return command
 }
 
@@ -74,7 +75,8 @@ async function main() {
     }
 
     c.action(async (flags) => {
-      const { model, files, type, url, search, stream, ...localFlags } = flags
+      const { model, files, type, url, search, stream, reply, ...localFlags } =
+        flags
       const pipeInput = await readPipeInput()
 
       if (command.require_stdin && !pipeInput) {
@@ -88,7 +90,16 @@ async function main() {
         command.variables,
         localFlags
       )
-      await ask(prompt, { model, pipeInput, files, type, url, search, stream })
+      await ask(prompt, {
+        model,
+        pipeInput,
+        files,
+        type,
+        url,
+        search,
+        stream,
+        reply,
+      })
     })
   }
 

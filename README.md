@@ -66,7 +66,7 @@ ask "question" -m gpt-4o
 ask "question" -m claude-3-opus
 ```
 
-## Piping
+### Piping
 
 You can pipe the output of other programs to `ask`, for example you can use `cat` to add file contents to the LLM context:
 
@@ -80,9 +80,19 @@ If you want to add multiple files, especially when you also want to include file
 ask --files "src/*.ts " "write a concise outline for this project"
 ```
 
-## Result Type
+### Ask Follow-up Questions
 
-### Command
+Using `-r` or `--reply` flag to ask follow-up questions to the previous answer:
+
+```bash
+ask "how to delete a docker image"
+
+ask -r "delete last 30 days"
+```
+
+### Result Type
+
+#### Command
 
 Using `-c` or `--command` flag to enforce the output to be a command only:
 
@@ -90,7 +100,7 @@ Using `-c` or `--command` flag to enforce the output to be a command only:
 ask "turn foo.mp4 to 720p using ffmpeg" -c
 ```
 
-### Custom Type
+#### Custom Type
 
 Define the type of the result using `-t` or `--type` flag:
 
@@ -140,7 +150,7 @@ ask "how to delete a docker image" --no-stream
 
 When `--no-stream` is enabled the output markdown will have proper syntax highlighting, when streaming is enabled the output will be plain text because the terminal have trouble clearing the screen when the output is too long
 
-## Reusable AI Commands
+### Reusable AI Commands
 
 Shell Ask allows you to define reusable AI commands in the [config file](./docs/config.md), for example the builtin `ask cm` command:
 

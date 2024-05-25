@@ -11,6 +11,7 @@ import { fetchUrl } from "./fetch-url"
 import { getSearchResult } from "./search"
 import logUpdate from "log-update"
 import { renderMarkdown } from "./markdown"
+import { loadChat, saveChat } from "./chat"
 
 export async function ask(
   prompt: string | undefined,
@@ -23,16 +24,20 @@ export async function ask(
     url?: string | string[]
     search?: boolean
     stream?: boolean
+    reply?: boolean
   }
 ) {
-  const messages: CoreMessage[] = []
-
   if (!prompt) {
     throw new CliError("please provide a prompt")
   }
 
+  const chat = loadChat()
   const config = loadConfig()
-  let modelId = options.model || config.default_model || "gpt-3.5-turbo"
+  let modelId =
+    options.model ||
+    chat?.options.realModelId ||
+    config.default_model ||
+    "gpt-3.5-turbo"
 
   const models = await getAllModels(
     modelId === "ollama" || modelId.startsWith("ollama-") ? "required" : false
@@ -75,8 +80,10 @@ export async function ask(
   const files = await loadFiles(options.files || [])
   const remoteContents = await fetchUrl(options.url || [])
   const context = [
-    `Context:`,
-    `shell: ${process.env.SHELL || "unknown"}`,
+    // inhert prev chat
+    !chat && `Context:`,
+    !chat && `shell: ${process.env.SHELL || "unknown"}`,
+
     options.pipeInput && [`stdin:`, "```", options.pipeInput, "```"].join("\n"),
 
     files.length > 0 && "files:",
@@ -97,12 +104,22 @@ export async function ask(
     searchResult = await getSearchResult(searchModel, { context, prompt })
   }
 
+  const messages: CoreMessage[] = []
+
+  const prevSystemMessage = chat?.messages[0]
+
   messages.push({
     role: "system",
-    content: [context, searchResult && "search result:", searchResult]
-      .filter(notEmpty)
-      .join("\n"),
+    content:
+      (prevSystemMessage?.content ? `${prevSystemMessage.content}\n` : "") +
+      [context, searchResult && "search result:", searchResult]
+        .filter(notEmpty)
+        .join("\n"),
   })
+
+  if (chat) {
+    messages.push(...chat.messages.slice(1))
+  }
 
   messages.push({
     role: "user",
@@ -129,12 +146,14 @@ export async function ask(
 
   logUpdate(`Waiting for ${realModelId} to respond...`)
 
+  const temperature = 0
+
   // @ts-expect-error Bun doesn't support TextDecoderStream
   if (options.stream === false || typeof Bun !== "undefined") {
     const result = await generateText({
       model: model(realModelId),
       messages,
-      temperature: 0,
+      temperature,
     })
 
     logUpdate.clear()
@@ -145,15 +164,22 @@ export async function ask(
   const { textStream } = await streamText({
     model: model(realModelId),
     messages,
-    temperature: 0,
+    temperature,
   })
 
   logUpdate.clear()
 
+  let output = ""
   for await (const textPart of textStream) {
+    output += textPart
     process.stdout.write(textPart)
   }
   process.stdout.write("\n")
+
+  saveChat({
+    messages: [...messages, { role: "assistant", content: output }],
+    options: { realModelId, temperature },
+  })
 
   process.exit()
 }
