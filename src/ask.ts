@@ -25,6 +25,7 @@ export async function ask(
     search?: boolean
     stream?: boolean
     reply?: boolean
+    breakdown?: boolean
   }
 ) {
   if (!prompt) {
@@ -127,6 +128,9 @@ export async function ask(
       prompt,
       options.command
         ? `Return the command only without any other text or markdown code fences.`
+        : ``,
+      options.breakdown
+        ? `You must return in the following format:\n...command\n\n...command breakdown`
         : ``,
       options.type
         ? [

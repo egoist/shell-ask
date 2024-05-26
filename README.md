@@ -100,6 +100,12 @@ Using `-c` or `--command` flag to enforce the output to be a command only:
 ask "turn foo.mp4 to 720p using ffmpeg" -c
 ```
 
+Using `-b` or `--breakdown` flag to return a command and the breakdown of the command:
+
+```bash
+ask "turn foo.mp4 to 720p using ffmpeg" -b
+```
+
 #### Custom Type
 
 Define the type of the result using `-t` or `--type` flag:

@@ -15,6 +15,11 @@ if (process.env.PKG_NAME && process.env.PKG_VERSION) {
 }
 
 function applyCommonFlags(command: CliCommand) {
+  command.option("-c, --command", "Ask LLM to return a command only")
+  command.option(
+    "-b, --breakdown",
+    "Ask LLM to return a command and the breakdown of this command"
+  )
   command.option("-m, --model <model>", "Choose the LLM to use")
   command.option("--files <pattern>", "Adding files to model context")
   command.option(
@@ -36,13 +41,11 @@ async function main() {
 
   applyCommonFlags(root)
 
-  root
-    .option("-c, --command", "Ask LLM to return the command only")
-    .action(async (prompt, flags) => {
-      const pipeInput = await readPipeInput()
+  root.action(async (prompt, flags) => {
+    const pipeInput = await readPipeInput()
 
-      await ask(prompt, { ...flags, pipeInput })
-    })
+    await ask(prompt, { ...flags, pipeInput })
+  })
 
   cli
     .command("list", "List available models")
@@ -75,8 +78,17 @@ async function main() {
     }
 
     c.action(async (flags) => {
-      const { model, files, type, url, search, stream, reply, ...localFlags } =
-        flags
+      const {
+        model,
+        files,
+        type,
+        url,
+        search,
+        stream,
+        reply,
+        breakdown,
+        ...localFlags
+      } = flags
       const pipeInput = await readPipeInput()
 
       if (command.require_stdin && !pipeInput) {
@@ -99,6 +111,7 @@ async function main() {
         search,
         stream,
         reply,
+        breakdown,
       })
     })
   }
