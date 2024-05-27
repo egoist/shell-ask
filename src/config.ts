@@ -22,7 +22,7 @@ const AICommandVariableSchema = z.union([
         z.object({
           value: z.string(),
           title: z.string(),
-        })
+        }),
       ),
     })
     .describe("get a choice from the user"),
@@ -49,10 +49,26 @@ export type AICommand = z.infer<typeof AICommandSchema>
 
 export const ConfigSchema = z.object({
   default_model: z.string().optional(),
-  openai_api_key: z.string().optional(),
-  openai_api_url: z.string().optional(),
-  gemini_api_key: z.string().optional(),
-  anthropic_api_key: z.string().optional(),
+  openai_api_key: z
+    .string()
+    .optional()
+    .describe('Default to the "OPENAI_API_KEY" environment variable'),
+  openai_api_url: z
+    .string()
+    .optional()
+    .describe('Default to the "OPENAI_API_URL" environment variable'),
+  gemini_api_key: z
+    .string()
+    .optional()
+    .describe('Default to the "GEMINI_API_KEY" environment variable'),
+  gemini_api_url: z
+    .string()
+    .optional()
+    .describe('Default to the "GEMINI_API_URL" environment variable'),
+  anthropic_api_key: z
+    .string()
+    .optional()
+    .describe('Default to the "ANTHROPIC_API_KEY" environment variable'),
   commands: z.array(AICommandSchema).optional(),
 })
 

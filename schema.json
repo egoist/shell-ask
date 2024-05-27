@@ -8,16 +8,24 @@
           "type": "string"
         },
         "openai_api_key": {
-          "type": "string"
+          "type": "string",
+          "description": "Default to the \"OPENAI_API_KEY\" environment variable"
         },
         "openai_api_url": {
-          "type": "string"
+          "type": "string",
+          "description": "Default to the \"OPENAI_API_URL\" environment variable"
         },
         "gemini_api_key": {
-          "type": "string"
+          "type": "string",
+          "description": "Default to the \"GEMINI_API_KEY\" environment variable"
+        },
+        "gemini_api_url": {
+          "type": "string",
+          "description": "Default to the \"GEMINI_API_URL\" environment variable"
         },
         "anthropic_api_key": {
-          "type": "string"
+          "type": "string",
+          "description": "Default to the \"ANTHROPIC_API_KEY\" environment variable"
         },
         "commands": {
           "type": "array",
