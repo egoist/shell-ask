@@ -1,3 +1,4 @@
+import process from "node:process"
 import { CoreMessage, generateText, streamText } from "ai"
 import { loadFiles, notEmpty } from "./utils"
 import { loadConfig } from "./config"

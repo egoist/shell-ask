@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import process from "node:process"
 import { cac, Command as CliCommand } from "cac"
 import { getAllModels } from "./models"
 import updateNotifier from "update-notifier"

@@ -1,3 +1,4 @@
+import process from "node:process"
 import { createOpenAI } from "@ai-sdk/openai"
 import { createOllama } from "ollama-ai-provider"
 import { Config } from "./config"
@@ -7,7 +8,7 @@ import { CliError } from "./error"
 
 const missingConfigError = (type: "openai" | "anthropic" | "gemini") => {
   return new CliError(
-    `missing ${type} api key, check out the config docs for more: https://github.com/egoist/shell-ask/blob/main/docs/config.md`,
+    `missing ${type} api key, check out the config docs for more: https://github.com/egoist/shell-ask/blob/main/docs/config.md`
   )
 }
 
