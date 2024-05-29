@@ -65,12 +65,13 @@ export async function getPrompt(
                 message: command.message,
                 type: "select",
                 choices: command.choices,
+                stdin,
               }
             : {
                 name: "answer",
                 message: command.message,
                 type: "text",
-                stdin: stdin,
+                stdin,
               },
         ])
 

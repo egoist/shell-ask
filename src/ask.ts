@@ -46,6 +46,12 @@ export async function ask(
   )
 
   if (MODEL_PREFIXES.includes(modelId) || modelId === "ollama") {
+    if (process.platform === "win32" && !process.stdin.isTTY) {
+      throw new CliError(
+        "Interactively selecting a model is not supported on Windows when using piped input. Consider directly specifying the model id instead, for example: `-m gpt-3.5-turbo`"
+      )
+    }
+
     const result = await cliPrompts([
       {
         stdin,
@@ -74,7 +80,17 @@ export async function ask(
     modelId = result.modelId
   }
 
-  const realModelId = models.find((m) => m.id === modelId)?.realId || modelId
+  debug(`Selected modelID: ${modelId}`)
+
+  const matchedModel = models.find((m) => m.id === modelId)
+  if (!matchedModel) {
+    throw new CliError(
+      `model not found: ${modelId}\n\navailable models: ${models
+        .map((m) => m.id)
+        .join(", ")}`
+    )
+  }
+  const realModelId = matchedModel?.realId || modelId
   const model = getSDKModel(modelId, config)
 
   debug("model", realModelId)
