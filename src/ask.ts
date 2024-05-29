@@ -4,7 +4,7 @@ import { loadFiles, notEmpty } from "./utils"
 import { loadConfig } from "./config"
 import { MODEL_PREFIXES, getAllModels, getCheapModelId } from "./models"
 import cliPrompts from "prompts"
-import { ttyStdin } from "./tty"
+import { stdin } from "./tty"
 import { CliError } from "./error"
 import { getSDKModel } from "./ai-sdk"
 import { debug } from "./debug"
@@ -47,15 +47,14 @@ export async function ask(
 
   if (MODEL_PREFIXES.includes(modelId) || modelId === "ollama") {
     if (process.platform === "win32" && !process.stdin.isTTY) {
-      console.error(
-        "The feature to interactively select a model is not supported on Windows when using piped input. Consider specifying the model by configuring the 'default_model' in the config file or using the '--model' flag."
+      throw new CliError(
+        "Interactively selecting a model is not supported on Windows when using piped input. Consider directly specifying the model id instead, for example: `-m gpt-3.5-turbo`"
       )
-      process.exit(1)
     }
 
     const result = await cliPrompts([
       {
-        stdin: ttyStdin(),
+        stdin,
 
         type: "select",
 
@@ -75,8 +74,7 @@ export async function ask(
     ])
 
     if (typeof result.modelId !== "string" || !result.modelId) {
-      console.error("no model selected")
-      process.exit(1)
+      throw new CliError("no model selected")
     }
 
     modelId = result.modelId
@@ -90,11 +88,11 @@ export async function ask(
       .map((m) => m.id)
 
     if (!ollamaModels.includes(modelId)) {
-      console.error(
-        `Selected model not found, All available ollama models:\n`,
-        ollamaModels
+      throw new CliError(
+        `Selected model not found, All available ollama models:\n${ollamaModels.join(
+          ","
+        )}`
       )
-      process.exit(1)
     }
   }
 

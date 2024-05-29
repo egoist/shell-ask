@@ -1,6 +1,6 @@
 import { exec } from "node:child_process"
 import { AICommand, AICommandVariable, Config } from "./config"
-import { ttyStdin } from "./tty"
+import { stdin } from "./tty"
 import prompts from "prompts"
 import { builtinCommands } from "./builtin-commands"
 
@@ -65,12 +65,13 @@ export async function getPrompt(
                 message: command.message,
                 type: "select",
                 choices: command.choices,
+                stdin,
               }
             : {
                 name: "answer",
                 message: command.message,
                 type: "text",
-                stdin: ttyStdin(),
+                stdin,
               },
         ])
 
