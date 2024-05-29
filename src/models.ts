@@ -1,3 +1,4 @@
+import { CliError } from "./error"
 import { getOllamaModels } from "./ollama"
 
 export type ModelInfo = { id: string; realId?: string }
@@ -55,7 +56,7 @@ export async function getAllModels(includeOllama?: boolean | "required") {
   if (includeOllama) {
     const ollamaModels = await getOllamaModels()
     if (ollamaModels.length === 0 && includeOllama === "required") {
-      throw new Error("no Ollama models available")
+      throw new CliError("no Ollama models available")
     }
     models = [...models, ...ollamaModels]
   }

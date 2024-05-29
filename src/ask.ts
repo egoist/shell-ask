@@ -82,21 +82,15 @@ export async function ask(
 
   debug(`Selected modelID: ${modelId}`)
 
-  if (modelId.startsWith("ollama-")) {
-    const ollamaModels = models
-      .filter((m) => m.id.startsWith("ollama-"))
-      .map((m) => m.id)
-
-    if (!ollamaModels.includes(modelId)) {
-      throw new CliError(
-        `Selected model not found, All available ollama models:\n${ollamaModels.join(
-          ","
-        )}`
-      )
-    }
+  const matchedModel = models.find((m) => m.id === modelId)
+  if (!matchedModel) {
+    throw new CliError(
+      `model not found: ${modelId}\n\navailable models: ${models
+        .map((m) => m.id)
+        .join(", ")}`
+    )
   }
-
-  const realModelId = models.find((m) => m.id === modelId)?.realId || modelId
+  const realModelId = matchedModel?.realId || modelId
   const model = getSDKModel(modelId, config)
 
   debug("model", realModelId)
