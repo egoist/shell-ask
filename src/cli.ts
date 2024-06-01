@@ -12,7 +12,10 @@ import { loadConfig } from "./config"
 if (process.env.PKG_NAME && process.env.PKG_VERSION) {
   updateNotifier({
     pkg: { name: process.env.PKG_NAME, version: process.env.PKG_VERSION },
-  }).notify()
+    shouldNotifyInNpmScript: false,
+  }).notify({
+    isGlobal: true,
+  })
 }
 
 function applyCommonFlags(command: CliCommand) {
