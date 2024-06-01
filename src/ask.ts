@@ -82,7 +82,9 @@ export async function ask(
 
   debug(`Selected modelID: ${modelId}`)
 
-  const matchedModel = models.find((m) => m.id === modelId)
+  const matchedModel = models.find(
+    (m) => m.id === modelId || m.realId === modelId
+  )
   if (!matchedModel) {
     throw new CliError(
       `model not found: ${modelId}\n\navailable models: ${models
