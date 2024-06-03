@@ -9,9 +9,9 @@ import { readPipeInput } from "./tty"
 import { CliError } from "./error"
 import { loadConfig } from "./config"
 
-if (process.env.PKG_NAME && process.env.PKG_VERSION) {
+if (typeof PKG_NAME === "string" && typeof PKG_VERSION === "string") {
   updateNotifier({
-    pkg: { name: process.env.PKG_NAME, version: process.env.PKG_VERSION },
+    pkg: { name: PKG_NAME, version: PKG_VERSION },
     shouldNotifyInNpmScript: false,
   }).notify({
     isGlobal: true,

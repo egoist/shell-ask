@@ -6,8 +6,8 @@ const pkg = JSON.parse(fs.readFileSync("./package.json", "utf-8"))
 export default defineConfig({
   entry: ["./src/cli.ts"],
   format: "esm",
-  env: {
-    PKG_VERSION: pkg.version,
-    PKG_NAME: pkg.name,
+  define: {
+    PKG_VERSION: JSON.stringify(pkg.version),
+    PKG_NAME: JSON.stringify(pkg.name),
   },
 })

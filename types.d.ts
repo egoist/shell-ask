@@ -1,6 +1,2 @@
-declare namespace NodeJS {
-  interface ProcessEnv {
-    PKG_NAME: string
-    PKG_VERSION: string
-  }
-}
+declare const PKG_NAME: string
+declare const PKG_VERSION: string
