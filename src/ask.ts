@@ -61,11 +61,17 @@ export async function ask(
       {
         stdin,
 
-        type: "select",
+        type: "autocomplete",
 
         message: "Select a model",
 
         name: "modelId",
+
+        async suggest(input, choices) {
+          return choices.filter((choice) => {
+            return choice.title.toLowerCase().includes(input)
+          })
+        },
 
         choices: models
           .filter((item) => item.id.startsWith(`${modelId}-`))
