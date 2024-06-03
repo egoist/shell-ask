@@ -22,7 +22,7 @@ const AICommandVariableSchema = z.union([
         z.object({
           value: z.string(),
           title: z.string(),
-        }),
+        })
       ),
     })
     .describe("get a choice from the user"),
@@ -69,6 +69,10 @@ export const ConfigSchema = z.object({
     .string()
     .optional()
     .describe('Default to the "ANTHROPIC_API_KEY" environment variable'),
+  groq_api_key: z
+    .string()
+    .optional()
+    .describe('Default to the "GROQ_API_KEY" environment variable'),
   commands: z.array(AICommandSchema).optional(),
 })
 

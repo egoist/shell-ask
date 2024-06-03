@@ -6,7 +6,9 @@ import { createAnthropic } from "@ai-sdk/anthropic"
 import { createGoogleGenerativeAI } from "@ai-sdk/google"
 import { CliError } from "./error"
 
-const missingConfigError = (type: "openai" | "anthropic" | "gemini") => {
+const missingConfigError = (
+  type: "openai" | "anthropic" | "gemini" | "groq"
+) => {
   return new CliError(
     `missing ${type} api key, check out the config docs for more: https://github.com/egoist/shell-ask/blob/main/docs/config.md`
   )
@@ -40,6 +42,18 @@ export const getSDKModel = (modelId: string, config: Config) => {
     return createGoogleGenerativeAI({
       apiKey,
       baseURL: apiUrl,
+    })
+  }
+
+  if (modelId.startsWith("groq-")) {
+    const apiKey = config.groq_api_key || process.env.GROQ_API_KEY
+    if (!apiKey) {
+      throw missingConfigError("groq")
+    }
+
+    return createOpenAI({
+      apiKey,
+      baseURL: "https://api.groq.com/openai/v1",
     })
   }
 

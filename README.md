@@ -16,10 +16,11 @@ npm i -g shell-ask
 
 ## Supported LLMs
 
-- OpenAI
-- Anthropic
-- Ollama
-- Google Gemini
+- [OpenAI](https://openai.com)
+- [Anthropic Claude](https://anthropic.com)
+- [Ollama](https://ollama.com)
+- [Google Gemini](https://aistudio.google.com/)
+- [Groq](https://console.groq.com)
 
 ## Configuration
 

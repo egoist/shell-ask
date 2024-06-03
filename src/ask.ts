@@ -2,7 +2,12 @@ import process from "node:process"
 import { CoreMessage, generateText, streamText } from "ai"
 import { loadFiles, notEmpty } from "./utils"
 import { loadConfig } from "./config"
-import { MODEL_PREFIXES, getAllModels, getCheapModelId } from "./models"
+import {
+  MODEL_PREFIXES,
+  getAllModels,
+  getCheapModelId,
+  toProviderModelId,
+} from "./models"
 import cliPrompts from "prompts"
 import { stdin } from "./tty"
 import { CliError } from "./error"
@@ -170,11 +175,12 @@ export async function ask(
   logUpdate(`Waiting for ${realModelId} to respond...`)
 
   const temperature = 0
+  const providerModelId = toProviderModelId(realModelId)
 
   // @ts-expect-error Bun doesn't support TextDecoderStream
   if (options.stream === false || typeof Bun !== "undefined") {
     const result = await generateText({
-      model: model(realModelId),
+      model: model(providerModelId),
       messages,
       temperature,
     })
@@ -185,7 +191,7 @@ export async function ask(
   }
 
   const { textStream } = await streamText({
-    model: model(realModelId),
+    model: model(providerModelId),
     messages,
     temperature,
   })

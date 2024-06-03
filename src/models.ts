@@ -44,6 +44,32 @@ export const MODEL_MAP: {
       id: "gemini-pro",
     },
   ],
+  groq: [
+    {
+      id: "groq-llama3",
+      realId: "groq-llama3-70b-8192",
+    },
+    {
+      id: "groq-llama3-8b",
+      realId: "groq-llama3-8b-8192",
+    },
+    {
+      id: "groq-llama3-70b",
+      realId: "groq-llama3-70b-8192",
+    },
+    {
+      id: "groq-mixtral-8x7b",
+      realId: "groq-mixtral-8x7b-32768",
+    },
+    {
+      id: "groq-gemma",
+      realId: "groq-gemma-7b-it",
+    },
+    {
+      id: "groq-gemma-7b",
+      realId: "groq-gemma-7b-it",
+    },
+  ],
 }
 
 export const MODELS = Object.values(MODEL_MAP).flat()
@@ -71,5 +97,14 @@ export function getCheapModelId(modelId: string) {
 
   if (modelId.startsWith("gemini-")) return "gemini-pro"
 
+  if (modelId.startsWith("groq-")) return "groq-llama3-8b-8192"
+
+  return modelId
+}
+
+export function toProviderModelId(modelId: string) {
+  if (modelId.startsWith("groq-")) {
+    return modelId.replace("groq-", "")
+  }
   return modelId
 }
