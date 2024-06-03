@@ -120,7 +120,7 @@ async function main() {
     })
   }
 
-  cli.version(process.env.PKG_VERSION || "0.0.0")
+  cli.version(typeof PKG_VERSION === "string" ? PKG_VERSION : "0.0.0")
   cli.help()
 
   try {
