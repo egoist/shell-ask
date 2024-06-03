@@ -66,6 +66,17 @@ ask "question" -m gpt-4o
 ask "question" -m claude-3-opus
 ```
 
+Prompt without quotes:
+
+```bash
+# Same prompt
+ask "how to delete a docker image"
+ask how to delete a docker image
+
+# Escape using backslash if you need quotes inside the prompt
+ask who\'s john titor
+```
+
 ### Piping
 
 You can pipe the output of other programs to `ask`, for example you can use `cat` to add file contents to the LLM context:

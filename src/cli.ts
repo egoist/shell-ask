@@ -41,14 +41,14 @@ async function main() {
   const cli = cac("ask")
   const config = loadConfig()
 
-  const root = cli.command("[prompt]", "Run the prompt")
+  const root = cli.command("[...prompt]", "Run the prompt")
 
   applyCommonFlags(root)
 
   root.action(async (prompt, flags) => {
     const pipeInput = await readPipeInput()
 
-    await ask(prompt, { ...flags, pipeInput })
+    await ask(prompt.join(" "), { ...flags, pipeInput })
   })
 
   cli
