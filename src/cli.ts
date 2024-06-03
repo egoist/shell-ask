@@ -24,7 +24,10 @@ function applyCommonFlags(command: CliCommand) {
     "-b, --breakdown",
     "Ask LLM to return a command and the breakdown of this command"
   )
-  command.option("-m, --model <model>", "Choose the LLM to use")
+  command.option(
+    "-m, --model [model]",
+    "Choose the LLM to use, omit value to select interactively"
+  )
   command.option("--files <pattern>", "Adding files to model context")
   command.option(
     "-t, --type <type>",

@@ -22,7 +22,7 @@ import { loadChat, saveChat } from "./chat"
 export async function ask(
   prompt: string | undefined,
   options: {
-    model?: string
+    model?: string | boolean
     command?: boolean
     pipeInput?: string
     files?: string | string[]
@@ -41,7 +41,7 @@ export async function ask(
   const chat = options.reply ? loadChat() : null
   const config = loadConfig()
   let modelId =
-    options.model ||
+    (typeof options.model === "string" ? options.model : "select") ||
     chat?.options.realModelId ||
     config.default_model ||
     "gpt-3.5-turbo"
@@ -50,7 +50,11 @@ export async function ask(
     modelId === "ollama" || modelId.startsWith("ollama-") ? "required" : false
   )
 
-  if (MODEL_PREFIXES.includes(modelId) || modelId === "ollama") {
+  if (
+    modelId === "select" ||
+    modelId === "ollama" ||
+    (typeof modelId === "string" && MODEL_PREFIXES.includes(modelId))
+  ) {
     if (process.platform === "win32" && !process.stdin.isTTY) {
       throw new CliError(
         "Interactively selecting a model is not supported on Windows when using piped input. Consider directly specifying the model id instead, for example: `-m gpt-3.5-turbo`"
@@ -74,7 +78,9 @@ export async function ask(
         },
 
         choices: models
-          .filter((item) => item.id.startsWith(`${modelId}-`))
+          .filter(
+            (item) => modelId === "select" || item.id.startsWith(`${modelId}-`)
+          )
           .map((item) => {
             return {
               value: item.id,
