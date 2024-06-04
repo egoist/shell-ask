@@ -41,10 +41,12 @@ export async function ask(
   const chat = options.reply ? loadChat() : null
   const config = loadConfig()
   let modelId =
-    (typeof options.model === "string" ? options.model : "select") ||
-    chat?.options.realModelId ||
-    config.default_model ||
-    "gpt-3.5-turbo"
+    options.model === true
+      ? "select"
+      : options.model ||
+        chat?.options.realModelId ||
+        config.default_model ||
+        "gpt-3.5-turbo"
 
   const models = await getAllModels(
     modelId === "ollama" || modelId.startsWith("ollama-") ? "required" : false
