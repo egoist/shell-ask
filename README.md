@@ -55,9 +55,16 @@ cat package.json | ask "please fix exports"
 Interactively select a model:
 
 ```bash
-ask "question" -m gpt
-ask "question" -m claude
-ask "question" -m ollama
+# show all models
+ask quest -m
+# show all gpt models
+ask quest -m gpt
+# show all claude models
+ask quest -m claude
+# show all ollama models
+ask quest -m ollama
+# show all groq models
+ask quest -m groq
 ```
 
 Select a model by id:

@@ -49,7 +49,11 @@ export async function ask(
         "gpt-3.5-turbo"
 
   const models = await getAllModels(
-    modelId === "ollama" || modelId.startsWith("ollama-") ? "required" : false
+    modelId === "select" ||
+      modelId === "ollama" ||
+      modelId.startsWith("ollama-")
+      ? "required"
+      : false
   )
 
   if (
