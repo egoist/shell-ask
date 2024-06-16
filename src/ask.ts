@@ -32,7 +32,7 @@ export async function ask(
     stream?: boolean
     reply?: boolean
     breakdown?: boolean
-  }
+  },
 ) {
   if (!prompt) {
     throw new CliError("please provide a prompt")
@@ -49,11 +49,11 @@ export async function ask(
         "gpt-3.5-turbo"
 
   const models = await getAllModels(
-    modelId === "select" ||
-      modelId === "ollama" ||
-      modelId.startsWith("ollama-")
-      ? "required"
-      : false
+    modelId === "select"
+      ? true
+      : modelId === "ollama" || modelId.startsWith("ollama-")
+        ? "required"
+        : false,
   )
 
   if (
@@ -63,7 +63,7 @@ export async function ask(
   ) {
     if (process.platform === "win32" && !process.stdin.isTTY) {
       throw new CliError(
-        "Interactively selecting a model is not supported on Windows when using piped input. Consider directly specifying the model id instead, for example: `-m gpt-3.5-turbo`"
+        "Interactively selecting a model is not supported on Windows when using piped input. Consider directly specifying the model id instead, for example: `-m gpt-3.5-turbo`",
       )
     }
 
@@ -85,7 +85,7 @@ export async function ask(
 
         choices: models
           .filter(
-            (item) => modelId === "select" || item.id.startsWith(`${modelId}-`)
+            (item) => modelId === "select" || item.id.startsWith(`${modelId}-`),
           )
           .map((item) => {
             return {
@@ -106,13 +106,13 @@ export async function ask(
   debug(`Selected modelID: ${modelId}`)
 
   const matchedModel = models.find(
-    (m) => m.id === modelId || m.realId === modelId
+    (m) => m.id === modelId || m.realId === modelId,
   )
   if (!matchedModel) {
     throw new CliError(
       `model not found: ${modelId}\n\navailable models: ${models
         .map((m) => m.id)
-        .join(", ")}`
+        .join(", ")}`,
     )
   }
   const realModelId = matchedModel?.realId || modelId
@@ -134,7 +134,7 @@ export async function ask(
 
     remoteContents.length > 0 && "remote contents:",
     ...remoteContents.map(
-      (content) => `${content.url}:\n"""\n${content.content}\n"""`
+      (content) => `${content.url}:\n"""\n${content.content}\n"""`,
     ),
   ]
     .filter(notEmpty)
