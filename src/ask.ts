@@ -9,7 +9,7 @@ import {
   toProviderModelId,
 } from "./models"
 import cliPrompts from "prompts"
-import { stdin } from "./tty"
+import { isOutputTTY, stdin } from "./tty"
 import { CliError } from "./error"
 import { getSDKModel } from "./ai-sdk"
 import { debug } from "./debug"
@@ -190,7 +190,9 @@ export async function ask(
 
   debug("messages", messages)
 
-  logUpdate(`Waiting for ${realModelId} to respond...`)
+  if (isOutputTTY) {
+    logUpdate(`Waiting for ${realModelId} to respond...`)
+  }
 
   const temperature = 0
   const providerModelId = toProviderModelId(realModelId)

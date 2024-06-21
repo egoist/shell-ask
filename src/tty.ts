@@ -7,6 +7,8 @@ export const stdin =
     ? process.stdin
     : new tty.ReadStream(fs.openSync("/dev/tty", "r"))
 
+export const isOutputTTY = process.stdout.isTTY
+
 // ifconfig | ask "what is my ip"
 export const readPipeInput = async () => {
   // not piped input
