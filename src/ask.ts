@@ -46,7 +46,7 @@ export async function ask(
       : options.model ||
         chat?.options.realModelId ||
         config.default_model ||
-        "gpt-3.5-turbo"
+        "gpt-4o-mini"
 
   const models = await getAllModels(
     modelId === "select"
@@ -63,7 +63,7 @@ export async function ask(
   ) {
     if (process.platform === "win32" && !process.stdin.isTTY) {
       throw new CliError(
-        "Interactively selecting a model is not supported on Windows when using piped input. Consider directly specifying the model id instead, for example: `-m gpt-3.5-turbo`",
+        "Interactively selecting a model is not supported on Windows when using piped input. Consider directly specifying the model id instead, for example: `-m gpt-4o`",
       )
     }
 

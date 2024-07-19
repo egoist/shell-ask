@@ -98,7 +98,7 @@ export async function getAllModels(includeOllama?: boolean | "required") {
 }
 
 export function getCheapModelId(modelId: string) {
-  if (modelId.startsWith("gpt-")) return "gpt-3.5-turbo"
+  if (modelId.startsWith("gpt-")) return "gpt-4o-mini"
 
   if (modelId.startsWith("claude-")) return "claude-3-haiku-20240307"
 

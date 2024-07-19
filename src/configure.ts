@@ -1,5 +1,5 @@
 import prompts from "prompts"
-import { loadConfig, saveConfig } from "./config"
+import { loadConfig } from "./config"
 
 export async function configure() {
   const config = loadConfig()
@@ -8,7 +8,7 @@ export async function configure() {
     {
       type: "text",
       name: "default_model",
-      message: "Default model (e.g. gpt-3.5-turbo)",
+      message: "Default model (e.g. gpt-4o-mini)",
     },
     {
       type: "password",
