@@ -1,12 +1,15 @@
 {
   "name": "shell-ask",
-  "version": "0.0.35",
+  "version": "0.0.36",
   "description": "Ask LLM any question in your terminal",
   "type": "module",
   "bin": {
     "ask": "./dist/cli.js"
   },
-  "files": ["dist", "schema.json"],
+  "files": [
+    "dist",
+    "schema.json"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/egoist/shell-ask"
