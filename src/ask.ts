@@ -207,6 +207,7 @@ export async function ask(
 
     logUpdate.clear()
     logUpdate(renderMarkdown(result.text).trim())
+    logUpdate.done()
     process.exit()
   }
 
@@ -230,5 +231,6 @@ export async function ask(
     options: { realModelId, temperature },
   })
 
+  logUpdate.done()
   process.exit()
 }

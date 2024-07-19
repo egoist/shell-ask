@@ -16,6 +16,9 @@ export const MODEL_MAP: {
     {
       id: "gpt-4o",
     },
+    {
+      id: "gpt-4o-mini",
+    },
   ],
   claude: [
     {
