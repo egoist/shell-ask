@@ -35,7 +35,7 @@ export const MODEL_MAP: {
     },
     {
       id: "claude-3.5-sonnet",
-      realId: "claude-3-5-sonnet-20240620",
+      realId: "claude-3-5-sonnet-20241022",
     },
   ],
   gemini: [
