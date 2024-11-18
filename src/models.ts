@@ -20,6 +20,14 @@ export const MODEL_MAP: {
       id: "gpt-4o-mini",
     },
   ],
+  openai: [
+    {
+      id: "openai-o1-mini",
+    },
+    {
+      id: "openai-o1-preview",
+    },
+  ],
   claude: [
     {
       id: "claude-3-haiku",
@@ -81,6 +89,28 @@ export const MODEL_MAP: {
       realId: "groq-gemma-7b-it",
     },
   ],
+  copilot: [
+    {
+      id: "copilot-gpt-4",
+      realId: "gpt-4",
+    },
+    {
+      id: "copilot-gpt-4o",
+      realId: "gpt-4o",
+    },
+    {
+      id: "copilot-o1-mini",
+      realId: "o1-mini",
+    },
+    {
+      id: "copilot-o1-preview",
+      realId: "o1-preview",
+    },
+    {
+      id: "copilot-claude-3.5-sonnet",
+      realId: "claude-3.5-sonnet",
+    },
+  ],
 }
 
 export const MODELS = Object.values(MODEL_MAP).flat()
@@ -109,6 +139,10 @@ export function getCheapModelId(modelId: string) {
   if (modelId.startsWith("gemini-")) return "gemini-pro"
 
   if (modelId.startsWith("groq-")) return "groq-llama3-8b-8192"
+
+  if (modelId.startsWith("copilot-")) return "copilot-gpt-4o"
+
+  if (modelId.startsWith("openai-")) return "gpt-4o-mini"
 
   return modelId
 }

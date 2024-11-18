@@ -3,7 +3,7 @@ import os from "node:os"
 import path from "node:path"
 import { z } from "zod"
 
-const configDirPath = path.join(os.homedir(), ".config", "shell-ask")
+export const configDirPath = path.join(os.homedir(), ".config", "shell-ask")
 export const configFilePath = path.join(configDirPath, "config.json")
 
 const AICommandVariableSchema = z.union([

@@ -1,5 +1,6 @@
-import fs from "fs"
+import fs from "node:fs"
 import glob from "fast-glob"
+import { exec } from "node:child_process"
 
 export function notEmpty<TValue>(
   value: TValue | null | undefined | "" | false
@@ -22,4 +23,23 @@ export async function loadFiles(
       return { name, content }
     })
   )
+}
+
+export async function runCommand(command: string) {
+  return new Promise<string>((resolve, reject) => {
+    const cmd = exec(command)
+    let output = ""
+    cmd.stdout?.on("data", (data) => {
+      output += data
+    })
+    cmd.stderr?.on("data", (data) => {
+      output += data
+    })
+    cmd.on("close", () => {
+      resolve(output)
+    })
+    cmd.on("error", (error) => {
+      reject(error)
+    })
+  })
 }

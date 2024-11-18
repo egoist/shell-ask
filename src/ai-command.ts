@@ -1,8 +1,8 @@
-import { exec } from "node:child_process"
 import { AICommand, AICommandVariable, Config } from "./config"
 import { stdin } from "./tty"
 import prompts from "prompts"
 import { builtinCommands } from "./builtin-commands"
+import { runCommand } from "./utils"
 
 export function getAllCommands(config: Config) {
   const commands: Record<string, AICommand> = {}
@@ -18,25 +18,6 @@ export function getAllCommands(config: Config) {
   }
 
   return [...Object.values(commands)]
-}
-
-async function runCommand(command: string) {
-  return new Promise<string>((resolve, reject) => {
-    const cmd = exec(command)
-    let output = ""
-    cmd.stdout?.on("data", (data) => {
-      output += data
-    })
-    cmd.stderr?.on("data", (data) => {
-      output += data
-    })
-    cmd.on("close", () => {
-      resolve(output)
-    })
-    cmd.on("error", (error) => {
-      reject(error)
-    })
-  })
 }
 
 export async function getPrompt(

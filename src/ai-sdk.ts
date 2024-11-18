@@ -5,6 +5,7 @@ import { Config } from "./config"
 import { createAnthropic } from "@ai-sdk/anthropic"
 import { createGoogleGenerativeAI } from "@ai-sdk/google"
 import { CliError } from "./error"
+import { copilot } from "./copilot"
 
 const missingConfigError = (
   type: "openai" | "anthropic" | "gemini" | "groq"
@@ -14,7 +15,7 @@ const missingConfigError = (
   )
 }
 
-export const getSDKModel = (modelId: string, config: Config) => {
+export const getSDKModel = async (modelId: string, config: Config) => {
   if (modelId.startsWith("ollama-")) {
     return createOllama()
   }
@@ -57,6 +58,18 @@ export const getSDKModel = (modelId: string, config: Config) => {
     })
   }
 
+  if (modelId.startsWith("copilot-")) {
+    const apiKey = await getCopilotApiKey()
+    return createOpenAI({
+      apiKey,
+      baseURL: `https://api.githubcopilot.com`,
+      headers: {
+        "editor-version": "vscode/0.1.0",
+        "copilot-integration-id": "vscode-chat",
+      },
+    })
+  }
+
   const apiKey = config.openai_api_key || process.env.OPENAI_API_KEY
   if (!apiKey) {
     throw missingConfigError("openai")
@@ -68,4 +81,17 @@ export const getSDKModel = (modelId: string, config: Config) => {
     apiKey,
     baseURL: apiUrl,
   })
+}
+
+export const getCopilotApiKey = async () => {
+  const authToken = process.env.COPILOT_AUTH_TOKEN || copilot.loadAuthToken()
+
+  if (!authToken) {
+    throw new CliError(
+      `failed to get auth token, please login with 'ask copilot-login' first`
+    )
+  }
+
+  const result = await copilot.getCopilotToken(authToken)
+  return result.token
 }

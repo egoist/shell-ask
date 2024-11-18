@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import process from "node:process"
 import { cac, Command as CliCommand } from "cac"
+import { bold, green, underline } from "colorette"
 import { getAllModels } from "./models"
 import updateNotifier from "update-notifier"
 import { ask } from "./ask"
@@ -8,6 +9,8 @@ import { getAllCommands, getPrompt } from "./ai-command"
 import { readPipeInput } from "./tty"
 import { CliError } from "./error"
 import { loadConfig } from "./config"
+import { copilot } from "./copilot"
+import { APICallError } from "ai"
 
 if (typeof PKG_NAME === "string" && typeof PKG_VERSION === "string") {
   updateNotifier({
@@ -64,6 +67,47 @@ async function main() {
         console.log(model.id)
       }
     })
+
+  cli.command("copilot-login").action(async () => {
+    const deviceCodeResult = await copilot.requestDeviceCode()
+
+    console.log("First copy your one-time code:\n")
+    console.log(bold(green(deviceCodeResult.user_code)))
+    console.log()
+    console.log(
+      "Then visit this GitHub URL to authorize:",
+      underline(deviceCodeResult.verification_uri)
+    )
+
+    console.log()
+    console.log("Waiting for authentication...")
+    console.log(`Press ${bold("Enter")} to check the authentication status...`)
+
+    const checkAuth = async () => {
+      const authResult = await copilot
+        .verifyAuth(deviceCodeResult)
+        .catch(() => null)
+      if (authResult) {
+        console.log("Authentication successful!")
+        copilot.saveAuthToken(authResult.access_token)
+        process.exit(0)
+      } else {
+        console.log("Authentication failed. Please try again.")
+      }
+    }
+
+    // press Enter key to check auth
+    process.stdin.on("data", (data) => {
+      if (data.toString() === "\n") {
+        checkAuth()
+      }
+    })
+  })
+
+  cli.command("copilot-logout").action(() => {
+    copilot.removeAuthToken()
+    console.log("Copilot auth token removed")
+  })
 
   const allCommands = getAllCommands(config)
   for (const command of allCommands) {
@@ -133,6 +177,8 @@ async function main() {
     process.exitCode = 1
     if (error instanceof CliError) {
       console.error(error.message)
+    } else if (error instanceof APICallError) {
+      console.log(error.responseBody)
     } else {
       throw error
     }

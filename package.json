@@ -40,6 +40,7 @@
     "@types/node": "22.9.0",
     "@types/prompts": "^2.4.9",
     "@types/update-notifier": "^6.0.8",
+    "colorette": "^2.0.20",
     "tsup": "^8.0.2",
     "typescript": "5.6.3",
     "zod-to-json-schema": "3.23.5"
