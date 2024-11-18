@@ -136,6 +136,25 @@ cat package.json | ask "extract dependency names" -t "string[]"
 cat README.md | ask "extract headings" -t "{depth:number,title:string}[]"
 ```
 
+### Copilot Chat
+
+First you need to login to Copilot Chat:
+
+```bash
+ask copilot-login
+```
+
+Then you can ask questions:
+
+```bash
+ask "how to delete a docker image" -m copilot
+
+# or a specific model
+ask "how to delete a docker image" -m copilot-claude-3.5-sonnet
+```
+
+To log out, run `ask copilot-logout`.
+
 ### Web Search
 
 Enable web search by using `-s` or `--search` flag:
