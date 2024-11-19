@@ -21,7 +21,7 @@ npm i -g shell-ask
 - [Ollama](https://ollama.com)
 - [Google Gemini](https://aistudio.google.com/)
 - [Groq](https://console.groq.com)
-- GitHub Copilot Chat
+- [GitHub Copilot Chat](https://github.com/features/copilot)
 
 ## Configuration
 
