@@ -1,6 +1,6 @@
 {
   "name": "shell-ask",
-  "version": "0.0.38",
+  "version": "0.0.39",
   "description": "Ask LLM any question in your terminal",
   "type": "module",
   "bin": {
