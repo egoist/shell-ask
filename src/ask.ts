@@ -32,7 +32,7 @@ export async function ask(
     stream?: boolean
     reply?: boolean
     breakdown?: boolean
-  }
+  },
 ) {
   if (!prompt) {
     throw new CliError("please provide a prompt")
@@ -52,8 +52,8 @@ export async function ask(
     modelId === "select"
       ? true
       : modelId === "ollama" || modelId.startsWith("ollama-")
-      ? "required"
-      : false
+        ? "required"
+        : false,
   )
 
   if (
@@ -63,7 +63,7 @@ export async function ask(
   ) {
     if (process.platform === "win32" && !process.stdin.isTTY) {
       throw new CliError(
-        "Interactively selecting a model is not supported on Windows when using piped input. Consider directly specifying the model id instead, for example: `-m gpt-4o`"
+        "Interactively selecting a model is not supported on Windows when using piped input. Consider directly specifying the model id instead, for example: `-m gpt-4o`",
       )
     }
 
@@ -85,7 +85,7 @@ export async function ask(
 
         choices: models
           .filter(
-            (item) => modelId === "select" || item.id.startsWith(`${modelId}-`)
+            (item) => modelId === "select" || item.id.startsWith(`${modelId}-`),
           )
           .map((item) => {
             return {
@@ -106,16 +106,16 @@ export async function ask(
   debug(`Selected modelID: ${modelId}`)
 
   const matchedModel = models.find(
-    (m) => m.id === modelId || m.realId === modelId
+    (m) => m.id === modelId || m.realId === modelId,
   )
   if (!matchedModel) {
     throw new CliError(
       `model not found: ${modelId}\n\navailable models: ${models
         .map((m) => m.id)
-        .join(", ")}`
+        .join(", ")}`,
     )
   }
-  const realModelId = matchedModel?.realId || modelId
+  const realModelId = matchedModel.realId || modelId
   const model = await getSDKModel(modelId, config)
 
   debug("model", realModelId)
@@ -134,7 +134,7 @@ export async function ask(
 
     remoteContents.length > 0 && "remote contents:",
     ...remoteContents.map(
-      (content) => `${content.url}:\n"""\n${content.content}\n"""`
+      (content) => `${content.url}:\n"""\n${content.content}\n"""`,
     ),
   ]
     .filter(notEmpty)
@@ -147,12 +147,14 @@ export async function ask(
     searchResult = await getSearchResult(searchModel, { context, prompt })
   }
 
+  const isCopilotO1 = matchedModel.id.startsWith("copilot-o1-")
   const messages: CoreMessage[] = []
 
   const prevSystemMessage = chat?.messages[0]
 
   messages.push({
-    role: "system",
+    // using system message with copilot-o1 results in Bad Request
+    role: isCopilotO1 ? "user" : "system",
     content:
       (prevSystemMessage?.content ? `${prevSystemMessage.content}\n` : "") +
       [context, searchResult && "search result:", searchResult]
@@ -197,7 +199,8 @@ export async function ask(
   const temperature = 0
   const providerModelId = toProviderModelId(realModelId)
 
-  if (options.stream === false) {
+  // Copilot O1 doesn't support streaming yet
+  if (options.stream === false || isCopilotO1) {
     const result = await generateText({
       model: model(providerModelId),
       messages,

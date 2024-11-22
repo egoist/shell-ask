@@ -8,10 +8,10 @@ import { CliError } from "./error"
 import { copilot } from "./copilot"
 
 const missingConfigError = (
-  type: "openai" | "anthropic" | "gemini" | "groq"
+  type: "openai" | "anthropic" | "gemini" | "groq",
 ) => {
   return new CliError(
-    `missing ${type} api key, check out the config docs for more: https://github.com/egoist/shell-ask/blob/main/docs/config.md`
+    `missing ${type} api key, check out the config docs for more: https://github.com/egoist/shell-ask/blob/main/docs/config.md`,
   )
 }
 
@@ -88,7 +88,7 @@ export const getCopilotApiKey = async () => {
 
   if (!authToken) {
     throw new CliError(
-      `failed to get auth token, please login with 'ask copilot-login' first`
+      `failed to get auth token, please login with 'ask copilot-login' first`,
     )
   }
 

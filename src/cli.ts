@@ -25,16 +25,16 @@ function applyCommonFlags(command: CliCommand) {
   command.option("-c, --command", "Ask LLM to return a command only")
   command.option(
     "-b, --breakdown",
-    "Ask LLM to return a command and the breakdown of this command"
+    "Ask LLM to return a command and the breakdown of this command",
   )
   command.option(
     "-m, --model [model]",
-    "Choose the LLM to use, omit value to select interactively"
+    "Choose the LLM to use, omit value to select interactively",
   )
   command.option("--files <pattern>", "Adding files to model context")
   command.option(
     "-t, --type <type>",
-    "Define the shape of the response in TypeScript"
+    "Define the shape of the response in TypeScript",
   )
   command.option("-u,--url <url>", "Fetch URL content as context")
   command.option("-s, --search", "Enable web search")
@@ -76,7 +76,7 @@ async function main() {
     console.log()
     console.log(
       "Then visit this GitHub URL to authorize:",
-      underline(deviceCodeResult.verification_uri)
+      underline(deviceCodeResult.verification_uri),
     )
 
     console.log()
@@ -144,14 +144,14 @@ async function main() {
 
       if (command.require_stdin && !pipeInput) {
         throw new CliError(
-          `this command requires piping input from another program to Shell Ask, e.g. \`echo 'input' | ask ${command.command}\``
+          `this command requires piping input from another program to Shell Ask, e.g. \`echo 'input' | ask ${command.command}\``,
         )
       }
 
       const prompt = await getPrompt(
         command.prompt,
         command.variables,
-        localFlags
+        localFlags,
       )
       await ask(prompt, {
         model,
