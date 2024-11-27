@@ -73,6 +73,10 @@ export const ConfigSchema = z.object({
     .string()
     .optional()
     .describe('Default to the "GROQ_API_KEY" environment variable'),
+  ollama_host: z
+    .string()
+    .optional()
+    .describe('Default to the "OLLAMA_HOST" environment variable'),
   commands: z.array(AICommandSchema).optional(),
 })
 
