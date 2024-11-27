@@ -1,10 +1,15 @@
 import { ModelInfo } from "./models"
 import { loadConfig } from "./config"
 
-export async function getOllamaModels() {
+export function getOllamaHost() {
   const config = loadConfig()
-  const ollamaHost = config.ollama_host || process.env.OLLAMA_HOST || 'http://127.0.0.1:11434'
-  const models: ModelInfo[] = await fetch(`${ollamaHost}/api/tags`)
+  const baseUrl = config.ollama_host || process.env.OLLAMA_HOST || 'http://127.0.0.1:11434'
+  return `${baseUrl}/api`
+}
+
+export async function getOllamaModels() {
+  const ollamaHost = getOllamaHost()
+  const models: ModelInfo[] = await fetch(`${ollamaHost}/tags`)
     .then((res) => {
       if (!res.ok) return []
 
