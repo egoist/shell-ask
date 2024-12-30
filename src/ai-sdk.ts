@@ -6,6 +6,7 @@ import { createAnthropic } from "@ai-sdk/anthropic"
 import { createGoogleGenerativeAI } from "@ai-sdk/google"
 import { CliError } from "./error"
 import { copilot } from "./copilot"
+import { getOllamaHost } from "./ollama"
 
 const missingConfigError = (
   type: "openai" | "anthropic" | "gemini" | "groq",
@@ -17,7 +18,9 @@ const missingConfigError = (
 
 export const getSDKModel = async (modelId: string, config: Config) => {
   if (modelId.startsWith("ollama-")) {
-    return createOllama()
+    return createOllama({
+      baseURL: getOllamaHost(),
+    })
   }
 
   if (modelId.startsWith("claude-")) {
