@@ -55,9 +55,14 @@ export const getSDKModel = async (modelId: string, config: Config) => {
       throw missingConfigError("groq")
     }
 
+    const apiUrl =
+      config.groq_api_url ||
+      process.env.GROQ_API_URL ||
+      "https://api.groq.com/openai/v1"
+
     return createOpenAI({
       apiKey,
-      baseURL: "https://api.groq.com/openai/v1",
+      baseURL: apiUrl,
     })
   }
 
