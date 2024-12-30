@@ -6,20 +6,20 @@ import { createAnthropic } from "@ai-sdk/anthropic"
 import { createGoogleGenerativeAI } from "@ai-sdk/google"
 import { CliError } from "./error"
 import { copilot } from "./copilot"
-import { getOllamaHost } from "./ollama"
+import { getOllamaBaseURL } from "./ollama"
 
 const missingConfigError = (
-  type: "openai" | "anthropic" | "gemini" | "groq",
+  type: "openai" | "anthropic" | "gemini" | "groq"
 ) => {
   return new CliError(
-    `missing ${type} api key, check out the config docs for more: https://github.com/egoist/shell-ask/blob/main/docs/config.md`,
+    `missing ${type} api key, check out the config docs for more: https://github.com/egoist/shell-ask/blob/main/docs/config.md`
   )
 }
 
 export const getSDKModel = async (modelId: string, config: Config) => {
   if (modelId.startsWith("ollama-")) {
     return createOllama({
-      baseURL: getOllamaHost(),
+      baseURL: getOllamaBaseURL(config),
     })
   }
 
@@ -91,7 +91,7 @@ export const getCopilotApiKey = async () => {
 
   if (!authToken) {
     throw new CliError(
-      `failed to get auth token, please login with 'ask copilot-login' first`,
+      `failed to get auth token, please login with 'ask copilot-login' first`
     )
   }
 

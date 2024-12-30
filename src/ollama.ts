@@ -1,15 +1,16 @@
 import { ModelInfo } from "./models"
-import { loadConfig } from "./config"
+import { Config, loadConfig } from "./config"
 
-export function getOllamaHost() {
-  const config = loadConfig()
-  const baseUrl = config.ollama_host || process.env.OLLAMA_HOST || 'http://127.0.0.1:11434'
+export function getOllamaBaseURL(config: Config) {
+  const baseUrl =
+    config.ollama_host || process.env.OLLAMA_HOST || "http://127.0.0.1:11434"
   return `${baseUrl}/api`
 }
 
 export async function getOllamaModels() {
-  const ollamaHost = getOllamaHost()
-  const models: ModelInfo[] = await fetch(`${ollamaHost}/tags`)
+  const config = loadConfig()
+  const baseUrl = getOllamaBaseURL(config)
+  const models: ModelInfo[] = await fetch(`${baseUrl}/tags`)
     .then((res) => {
       if (!res.ok) return []
 
