@@ -4,7 +4,7 @@
 
 ---
 
-**Shell Ask is sponsored by [ChatKit](https://chatkit.app), a free chat app for ChatGPT and many other models.**
+**Shell Ask is sponsored by [ChatWise](https://chatwise.app), a free chat app for ChatGPT and many other models.**
 
 ## Install
 
