@@ -42,7 +42,7 @@ export const getSDKModel = async (modelId: string, config: Config) => {
     const apiUrl =
       config.gemini_api_url ||
       process.env.GEMINI_API_URL ||
-      "https://generativelanguage.googleapis.com/v1beta/models"
+      "https://generativelanguage.googleapis.com/v1beta/"
     return createGoogleGenerativeAI({
       apiKey,
       baseURL: apiUrl,
