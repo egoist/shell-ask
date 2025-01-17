@@ -98,7 +98,8 @@ async function main() {
 
     // press Enter key to check auth
     process.stdin.on("data", (data) => {
-      if (data.toString() === "\n") {
+      const str = data.toString()
+      if (str === "\n" || str === "\r") {
         checkAuth()
       }
     })
